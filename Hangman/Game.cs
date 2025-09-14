@@ -4,13 +4,13 @@ namespace Hangman;
 
 internal class Game
 {
-    Scene _activeScene;
+    MainScene _activeScene;
     GlyphBuffer _glyphBuffer;
     int _tick;
 
     public Game()
     {
-        _activeScene = new TitleScreen();
+        _activeScene = new MainScene();
         _glyphBuffer = new GlyphBuffer(50, 20);
 
         _tick = 0;
@@ -23,12 +23,13 @@ internal class Game
         Console.Clear();
         while (true)
         {
-
-            _activeScene.Update(_tick);
+            _activeScene.Update(Input());
             _activeScene.Draw(_glyphBuffer);
             Draw();
             _glyphBuffer.Clear();
             _tick++;
+            //Console.SetCursorPosition(0, 0);
+            //Console.WriteLine(_activeScene._player._speed);
             //Console.Beep(300, 200);
             //Console.Beep();
             System.Threading.Thread.Sleep(100);
@@ -52,6 +53,21 @@ internal class Game
                 }
             }
         }
+    }
+
+    internal ConsoleKey? Input()
+    {
+        ConsoleKey? input = null;
+        if (Console.KeyAvailable)
+        {
+            //input = Console.ReadKey(false).Key;
+            while (Console.KeyAvailable)
+            {
+                input = Console.ReadKey(false).Key;
+            }
+            Console.In.Close();
+        }
+        return input;
     }
 }
 public enum BodyType
@@ -91,6 +107,17 @@ internal class World
                 break;
             default:
                 break;
+        }
+    }
+
+    public void HandleCollisions()
+    {
+        var collisions = DetectCollisions();
+        foreach (var collision in collisions)
+        {
+            var bodyA = collision.BodyA;
+            var bodyB = collision.BodyB;
+
         }
     }
 
@@ -136,6 +163,14 @@ internal class World
         return null;
 
     }
+
+    internal void Tick()
+    {
+        foreach (Body body in _kinematicBodies)
+        {
+            body.Move();
+        }
+    }
 }
 
 internal class Collision
@@ -155,21 +190,49 @@ internal class Body
     public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
     public Vector2 Speed { get; set; }
+    public string Tag { get; set; }
 
-    public Body(BodyType type, Vector2 position, Vector2 size)
+    public Body(BodyType type, Vector2 position, Vector2 size, string tag)
     {
         Type = type;
         Position = position;
         Size = size;
         Speed = Vector2.Zero;
+        Tag = tag;
     }
 
     public void Move()
     {
         Position += Speed;
+    }
+
+    public void OnCollision(Body other)
+    {
         if (Type == BodyType.Kinematic)
         {
-            Speed = Vector2.Zero;
+            HandleKinematicCollision(other);
         }
+        else if (Type == BodyType.Static)
+        {
+            HandleStaticCollision(other);
+        }
+    }
+
+    private void HandleStaticCollision(Body other)
+    {
+        if (other.Type == BodyType.Kinematic)
+        {
+            other.HandleKinematicCollision(this);
+        }
+    }
+
+    private void HandleKinematicCollision(Body other)
+    {
+        // TODO: Add support for other types of collision than Static/Kinematic
+        if (other.Type != BodyType.Static)
+        {
+            return;
+        }
+
     }
 }

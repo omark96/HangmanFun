@@ -2,7 +2,7 @@
 
 namespace Hangman;
 
-internal class Player
+internal class Player : ICollidable
 {
     Sprite _sprite;
     Body _body;
@@ -26,11 +26,11 @@ internal class Player
     public Player(World world, int x, int y)
     {
         Vector2 position = new((float)x, (float)y);
-        Vector2 size = new(3, 0);
+        Vector2 size = new(1, 3);
         _speed = new Vector2(0, 0);
         _inAir = false;
-        _sprite = new Sprite(0, 0, "\0o\n/|\\\n/\0\\");
-        _body = new Body(BodyType.Kinematic, position, size, "player");
+        _sprite = new Sprite(-1, 0, "\0o\n/|\\\n/\0\\");
+        _body = new Body(BodyType.Kinematic, position, size, "player", this);
         world.AddBody(_body);
     }
 
@@ -56,7 +56,7 @@ internal class Player
         _speed = new(0, -0.7f);
     }
 
-    internal void Update(ConsoleKey? input)
+    public void Update(ConsoleKey? input)
     {
         if (!_inAir)
         {
@@ -77,6 +77,14 @@ internal class Player
         {
             _speed += new Vector2(0, 0.07f);
             _body.Speed = _speed;
+        }
+    }
+
+    public void OnCollision(Body other)
+    {
+        if (other.Name == "ground")
+        {
+            _inAir = false;
         }
     }
 }

@@ -23,12 +23,12 @@ internal class Ground
 
     public Ground(World world, int x, int y)
     {
-        int width = 40;
+        int width = 150;
         Vector2 position = new((float)x, (float)y);
-        Vector2 size = new(width, 5);
-        string texture = new string('‾', width);
+        Vector2 size = new(width, 10);
+        string texture = new string('T', width);
         _sprite = new Sprite(0, 0, texture);
-        _body = new Body(BodyType.Kinematic, position, size, "ground");
+        _body = new Body(BodyType.Static, position, size, "ground", this);
         world.AddBody(_body);
     }
 

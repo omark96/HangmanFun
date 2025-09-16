@@ -11,7 +11,7 @@ internal class Game
     public Game()
     {
         _activeScene = new MainScene();
-        _glyphBuffer = new GlyphBuffer(50, 20);
+        _glyphBuffer = new GlyphBuffer(150, 20);
 
         _tick = 0;
     }
@@ -32,7 +32,7 @@ internal class Game
             //Console.WriteLine(_activeScene._player._speed);
             //Console.Beep(300, 200);
             //Console.Beep();
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(50);
         }
     }
 
@@ -97,7 +97,7 @@ internal class World
         switch (body.Type)
         {
             case BodyType.Static:
-                _dynamicBodies.Add(body);
+                _staticBodies.Add(body);
                 break;
             //case BodyType.Dynamic:
             //    _dynamicBodies.Add(body);
@@ -112,13 +112,15 @@ internal class World
 
     public void HandleCollisions()
     {
+
         var collisions = DetectCollisions();
         foreach (var collision in collisions)
         {
             var bodyA = collision.BodyA;
             var bodyB = collision.BodyB;
-
+            bodyA.OnCollision(bodyB);
         }
+        return;
     }
 
     public List<Collision> DetectCollisions()
@@ -153,9 +155,9 @@ internal class World
     }
     public Collision? CheckForCollision(Body bodyA, Body bodyB)
     {
-        if (bodyA.Position.X + bodyA.Size.X < bodyB.Position.X &&
+        if (bodyA.Position.X + bodyA.Size.X > bodyB.Position.X &&
             bodyA.Position.X < bodyB.Position.X + bodyB.Size.X &&
-            bodyA.Position.Y + bodyA.Size.Y < bodyB.Position.Y &&
+            bodyA.Position.Y + bodyA.Size.Y > bodyB.Position.Y &&
             bodyA.Position.Y < bodyB.Position.Y + bodyB.Size.Y)
         {
             return new Collision(bodyA, bodyB);
@@ -169,6 +171,14 @@ internal class World
         foreach (Body body in _kinematicBodies)
         {
             body.Move();
+        }
+    }
+
+    internal void ResetSpeedOfKinematicBodies()
+    {
+        foreach (Body body in _kinematicBodies)
+        {
+            body.Speed = new(0, 0);
         }
     }
 }
@@ -186,19 +196,21 @@ internal class Collision
 
 internal class Body
 {
+    public string Name { get; set; }
     public BodyType Type { get; set; }
     public Vector2 Position { get; set; }
     public Vector2 Size { get; set; }
     public Vector2 Speed { get; set; }
-    public string Tag { get; set; }
+    public object Entity { get; set; }
 
-    public Body(BodyType type, Vector2 position, Vector2 size, string tag)
+    public Body(BodyType type, Vector2 position, Vector2 size, string name, object entity)
     {
         Type = type;
         Position = position;
         Size = size;
         Speed = Vector2.Zero;
-        Tag = tag;
+        Name = name;
+        Entity = entity;
     }
 
     public void Move()
@@ -208,6 +220,7 @@ internal class Body
 
     public void OnCollision(Body other)
     {
+        // TODO: Add support for other types of collision than Static-Kinematic
         if (Type == BodyType.Kinematic)
         {
             HandleKinematicCollision(other);
@@ -215,6 +228,14 @@ internal class Body
         else if (Type == BodyType.Static)
         {
             HandleStaticCollision(other);
+        }
+        if (Entity is ICollidable collidable)
+        {
+            collidable.OnCollision(other);
+        }
+        if (other.Entity is ICollidable collidable2)
+        {
+            collidable2.OnCollision(other);
         }
     }
 
@@ -228,11 +249,35 @@ internal class Body
 
     private void HandleKinematicCollision(Body other)
     {
-        // TODO: Add support for other types of collision than Static/Kinematic
         if (other.Type != BodyType.Static)
         {
             return;
         }
-
+        MTV(other);
     }
+
+    private void MTV(Body other)
+    {
+        if (Speed.Y > 0)
+        {
+            Position = new(Position.X, other.Position.Y - Size.Y);
+        }
+        else if (Speed.Y < 0)
+        {
+            Position = new(Position.X, other.Position.Y + other.Size.Y);
+        }
+        else if (Speed.X > 0)
+        {
+            Position = new(other.Position.X - Size.X, Position.Y);
+        }
+        else if (Speed.X < 0)
+        {
+            Position = new(other.Position.X + other.Size.X, Position.Y);
+        }
+    }
+}
+
+internal interface ICollidable
+{
+    public void OnCollision(Body other);
 }

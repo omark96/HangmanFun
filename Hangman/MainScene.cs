@@ -9,8 +9,8 @@ internal class MainScene : Scene
     public MainScene()
     {
         _world = new();
-        _player = new(_world, 15, 9);
-        _ground = new(_world, 0, 13);
+        _player = new(_world, 15, 11);
+        _ground = new(_world, 0, 14);
         _letterBoxes = new();
         //_letterBox = new(_world, 16, 6, 'A');
         for (int i = 0; i < 10; i++)

@@ -7,11 +7,15 @@ internal class Game
     MainScene _activeScene;
     GlyphBuffer _glyphBuffer;
     int _tick;
+    int _gameWidth;
+    int _gameHeight;
 
     public Game()
     {
+        _gameWidth = 150;
+        _gameHeight = 20;
         _activeScene = new MainScene();
-        _glyphBuffer = new GlyphBuffer(150, 20);
+        _glyphBuffer = new GlyphBuffer(_gameWidth, _gameHeight);
 
         _tick = 0;
     }
@@ -38,21 +42,17 @@ internal class Game
 
     internal void Draw()
     {
-
+        Console.SetCursorPosition(0, 0);
         for (int row = 0; row < _glyphBuffer.Height; row++)
         {
-            for (int col = 0; col < _glyphBuffer.Width; col++)
-            {
-                int pos = row * _glyphBuffer.Width + col;
-                char symbol = _glyphBuffer.Buffer[pos].Character;
-                char prevSymbol = _glyphBuffer.PrevBuffer[pos].Character;
-                if (symbol != prevSymbol)
-                {
-                    Console.SetCursorPosition(col, row);
-                    Console.Write(symbol);
-                }
-            }
+            int lineStart = _glyphBuffer.LineWidth * row;
+            int lineEnd = lineStart + _glyphBuffer.LineWidth;
+            Console.Write(_glyphBuffer.Buffer[lineStart..lineEnd]);
         }
+        //for (int row = 0; row < _glyphBuffer.Height; row++)
+        //{
+        //    Console.WriteLine();
+        //}
     }
 
     internal ConsoleKey? Input()

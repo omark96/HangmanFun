@@ -29,7 +29,7 @@ internal class Player : ICollidable
         Vector2 size = new(1, 3);
         _speed = new Vector2(0, 0);
         _inAir = false;
-        _sprite = new Sprite(-1, 0, "\0o\n/|\\\n/\0\\");
+        _sprite = new Sprite(-1, 0, "\0o\n/|\\\n/\0\\", null, new Color(255, 255, 255));
         _body = new Body(BodyType.Kinematic, position, size, "player", this);
         world.AddBody(_body);
     }

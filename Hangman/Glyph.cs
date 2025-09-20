@@ -2,12 +2,12 @@
 
 internal class Glyph : IEquatable<Glyph>
 {
-    public ConsoleColor Foreground { get; set; }
-    public ConsoleColor Background { get; set; }
+    public Color Foreground { get; set; }
+    public Color Background { get; set; }
     public char Character { get; set; }
 
-    public Glyph() : this(ConsoleColor.White, ConsoleColor.Black, ' ') { }
-    public Glyph(ConsoleColor foreground, ConsoleColor background, char character)
+    public Glyph() : this(new Color(255, 255, 255), new Color(0, 0, 0), ' ') { }
+    public Glyph(Color foreground, Color background, char character)
     {
         Foreground = foreground;
         Background = background;
@@ -54,4 +54,17 @@ internal class Glyph : IEquatable<Glyph>
     public static bool operator !=(Glyph lhs, Glyph rhs) => !(lhs == rhs);
 
     public override bool Equals(object? obj) => Equals(obj as Glyph);
+}
+
+internal record struct Color
+{
+    public byte R { get; set; }
+    public byte G { get; set; }
+    public byte B { get; set; }
+    public Color(byte r, byte g, byte b)
+    {
+        R = r;
+        G = g;
+        B = b;
+    }
 }

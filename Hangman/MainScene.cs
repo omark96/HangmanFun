@@ -12,8 +12,9 @@ internal class MainScene : Scene
         _player = new(_world, 15, 11);
         _ground = new(_world, 0, 14);
         _letterBoxes = new();
-        //_letterBox = new(_world, 16, 6, 'A');
-        for (int i = 0; i < 10; i++)
+        //LetterBox letterBox = new(_world, 0, 0, 'A');
+        //_letterBoxes.Add(letterBox);
+        for (int i = 0; i < 5; i++)
         {
             char c = (char)(i + 65);
             LetterBox letterBox = new(_world, 10 + i * 6, 6, c);

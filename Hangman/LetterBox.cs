@@ -18,8 +18,8 @@ internal class LetterBox : ICollidable
         Letter = letter;
         Vector2 size = new(5, 3);
         Vector2 position = new(x, y);
-        (byte, byte, byte) fgColor = ((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
-        (byte, byte, byte) bgColor = ((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
+        Color fgColor = new Color((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
+        Color bgColor = new Color((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
         _sprite = new Sprite(0, 0, $"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟", bgColor, fgColor);
         _body = new(BodyType.Static, position, size, "letterbox", this);
         world.AddBody(_body);

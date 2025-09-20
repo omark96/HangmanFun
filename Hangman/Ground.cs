@@ -23,7 +23,7 @@ internal class Ground
 
     public Ground(World world, int x, int y)
     {
-        int width = 150;
+        int width = 80;
         Vector2 position = new((float)x, (float)y);
         Vector2 size = new(width, 10);
         string texture = new string('T', width);

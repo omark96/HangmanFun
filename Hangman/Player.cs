@@ -4,7 +4,7 @@ namespace Hangman;
 
 internal class Player : ICollidable
 {
-    Sprite _sprite;
+    public Sprite Sprite { get; set; }
     Body _body;
     bool _inAir;
     Vector2 _speed;
@@ -29,14 +29,9 @@ internal class Player : ICollidable
         Vector2 size = new(1, 3);
         _speed = new Vector2(0, 0);
         _inAir = false;
-        _sprite = new Sprite(-1, 0, "\0o\n/|\\\n/\0\\", null, new Color(255, 255, 255));
+        Sprite = new Sprite(-1, 0, "\0o\n/|\\\n/\0\\", null, new Color(255, 255, 255));
         _body = new Body(BodyType.Kinematic, position, size, "player", this);
         world.AddBody(_body);
-    }
-
-    public void Draw(GlyphBuffer buffer)
-    {
-        _sprite.Draw(buffer, X, Y);
     }
 
     public void Move(int x)

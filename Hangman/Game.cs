@@ -3,7 +3,7 @@
 internal class Game
 {
     MainScene _activeScene;
-    GlyphBuffer _buffer;
+    Renderer _renderer;
     int _tick;
     int _gameWidth;
     int _gameHeight;
@@ -13,7 +13,7 @@ internal class Game
         _gameWidth = 80;
         _gameHeight = 20;
         _activeScene = new MainScene();
-        _buffer = new GlyphBuffer(_gameWidth, _gameHeight);
+        _renderer = new Renderer(_gameWidth, _gameHeight);
 
         _tick = 0;
     }
@@ -26,9 +26,9 @@ internal class Game
         while (true)
         {
             _activeScene.Update(Input());
-            _activeScene.Draw(_buffer);
-            _buffer.Draw();
-            _buffer.Clear();
+            _activeScene.Draw(_renderer);
+            _renderer.Draw();
+            _renderer.Buffer.Clear();
             _tick++;
             //Console.SetCursorPosition(0, 0);
             //Console.WriteLine(_activeScene._player._speed);

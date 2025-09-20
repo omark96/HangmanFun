@@ -46,13 +46,13 @@ internal class MainScene : Scene
         //}
     }
 
-    public override void Draw(GlyphBuffer textBuffer)
+    public override void Draw(Renderer renderer)
     {
-        _ground.Draw(textBuffer);
+        renderer.DrawSprite(_ground.Sprite, _ground.X, _ground.Y);
         foreach (LetterBox letterBox in _letterBoxes)
         {
-            letterBox.Draw(textBuffer);
+            renderer.DrawSprite(letterBox.Sprite, letterBox.X, letterBox.Y);
         }
-        _player.Draw(textBuffer);
+        renderer.DrawSprite(_player.Sprite, _player.X, _player.Y);
     }
 }

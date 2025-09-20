@@ -4,7 +4,7 @@ namespace Hangman;
 
 internal class LetterBox : ICollidable
 {
-    Sprite _sprite;
+    public Sprite Sprite { get; set; }
     Body _body;
     char Letter { get; set; }
     public int X { get; set; }
@@ -20,16 +20,10 @@ internal class LetterBox : ICollidable
         Vector2 position = new(x, y);
         Color fgColor = new Color((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
         Color bgColor = new Color((byte)rand.Next(256), (byte)rand.Next(256), (byte)rand.Next(256));
-        _sprite = new Sprite(0, 0, $"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟", bgColor, fgColor);
+        Sprite = new Sprite(0, 0, $"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟", bgColor, fgColor);
         _body = new(BodyType.Static, position, size, "letterbox", this);
         world.AddBody(_body);
     }
-
-    public void Draw(GlyphBuffer buffer)
-    {
-        _sprite.Draw(buffer, X, Y);
-    }
-
     void ICollidable.OnCollision(Body other)
     {
         if (other.Name == "player")

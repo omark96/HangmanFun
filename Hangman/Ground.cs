@@ -4,7 +4,7 @@ namespace Hangman;
 
 internal class Ground
 {
-    Sprite _sprite;
+    public Sprite Sprite { get; set; }
     Body _body;
     public int X
     {
@@ -27,13 +27,8 @@ internal class Ground
         Vector2 position = new((float)x, (float)y);
         Vector2 size = new(width, 10);
         string texture = new string('T', width);
-        _sprite = new Sprite(0, 0, texture);
+        Sprite = new Sprite(0, 0, texture);
         _body = new Body(BodyType.Static, position, size, "ground", this);
         world.AddBody(_body);
-    }
-
-    public void Draw(GlyphBuffer buffer)
-    {
-        _sprite.Draw(buffer, X, Y);
     }
 }

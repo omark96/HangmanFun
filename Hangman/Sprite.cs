@@ -26,34 +26,6 @@ internal class Sprite
 
     }
 
-    public void Draw(GlyphBuffer buffer, int x, int y)
-    {
-        string[] lines = Texture.Split('\n');
-        for (int j = 0; j < lines.Length; j++)
-        {
-            int yPos = Y + y + j;
-            for (int i = 0; i < lines[j].Length; i++)
-            {
-                char c = lines[j][i];
-                if (c != '\0')
-                {
-                    int xPos = X + x + i;
-                    int pos = xPos + yPos * buffer.Width;
-                    Glyph glyph = buffer.Buffer[pos];
-                    glyph.Character = c;
-                    if (BgColor != null)
-                    {
-                        glyph.Background = (Color)BgColor;
-                    }
-                    if (FgColor != null)
-                    {
-                        glyph.Foreground = (Color)FgColor;
-                    }
-                }
-            }
-        }
-    }
-
     //string CharToGlyph(char c)
     //{
     //    return $"\x1b[48;2;{BgColor.Item1:D3};{BgColor.Item2:D3};{BgColor.Item3:D3}m\x1b[38;2;{FgColor.Item1:D3};{FgColor.Item2:D3};{FgColor.Item3:D3}m{c}";

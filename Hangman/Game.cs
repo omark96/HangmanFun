@@ -11,7 +11,7 @@ internal class Game
     public Game()
     {
         _gameWidth = 80;
-        _gameHeight = 20;
+        _gameHeight = 10;
         _activeScene = new MainScene();
         _renderer = new Renderer(_gameWidth, _gameHeight);
 

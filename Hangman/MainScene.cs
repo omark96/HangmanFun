@@ -10,14 +10,14 @@ internal class MainScene : Scene
     {
         _world = new();
         _player = new(_world, 15, 11);
-        _ground = new(_world, 0, 14);
+        _ground = new(_world, -20, 14);
         _letterBoxes = new();
         //LetterBox letterBox = new(_world, 0, 0, 'A');
         //_letterBoxes.Add(letterBox);
         for (int i = 0; i < 5; i++)
         {
             char c = (char)(i + 65);
-            LetterBox letterBox = new(_world, 10 + i * 6, 6, c);
+            LetterBox letterBox = new(_world, i * 6, 5, c);
             _letterBoxes.Add(letterBox);
         }
     }
@@ -48,6 +48,8 @@ internal class MainScene : Scene
 
     public override void Draw(Renderer renderer)
     {
+        renderer.CameraX = _player.X - renderer.Buffer.Width / 2;
+        renderer.CameraY = _player.Y - renderer.Buffer.Height / 2;
         renderer.DrawSprite(_ground.Sprite, _ground.X, _ground.Y);
         foreach (LetterBox letterBox in _letterBoxes)
         {

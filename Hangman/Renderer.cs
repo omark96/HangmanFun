@@ -5,13 +5,13 @@ namespace Hangman;
 internal class Renderer
 {
     public GlyphBuffer Buffer { get; set; }
-    int CameraX { get; set; }
-    int CameraY { get; set; }
+    public int CameraX { get; set; }
+    public int CameraY { get; set; }
     public Renderer(int width, int height)
     {
         Buffer = new GlyphBuffer(width, height);
         Buffer.Clear();
-        CameraX = 0;
+        CameraX = 5;
         CameraY = 0;
     }
 
@@ -20,8 +20,8 @@ internal class Renderer
         string[] lines = sprite.Texture.Split('\n');
         for (int j = 0; j < lines.Length; j++)
         {
-            int yPos = sprite.Y + y + j + CameraY;
-            if (yPos < 0 || yPos > Buffer.Height)
+            int yPos = sprite.Y + y + j - CameraY;
+            if (yPos < 0 || yPos >= Buffer.Height)
             {
                 continue;
             }
@@ -30,8 +30,8 @@ internal class Renderer
                 char c = lines[j][i];
                 if (c != '\0')
                 {
-                    int xPos = sprite.X + x + CameraX + i;
-                    if (xPos < 0 || xPos > Buffer.Width)
+                    int xPos = sprite.X + x - CameraX + i;
+                    if (xPos < 0 || xPos >= Buffer.Width)
                     {
                         continue;
                     }
@@ -77,6 +77,7 @@ internal class Renderer
             }
             sb.Append(glyph.Character);
         }
+        string finalResult = sb.ToString();
         Console.Write(sb.ToString());
     }
 }

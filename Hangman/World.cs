@@ -1,4 +1,5 @@
-﻿namespace Hangman;
+﻿
+namespace Hangman;
 
 public enum BodyType
 {
@@ -109,5 +110,12 @@ internal class World
         {
             body.Speed = new(0, 0);
         }
+    }
+
+    internal void Update()
+    {
+        Tick();
+        HandleCollisions();
+        ResetSpeedOfKinematicBodies();
     }
 }

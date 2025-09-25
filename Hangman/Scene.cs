@@ -2,7 +2,7 @@
 
 internal abstract class Scene
 {
-    //public abstract void Init();
+    public required GameData Data { get; set; }
     public abstract void Update(ConsoleKey? input);
     public abstract void Draw(Renderer renderer);
 }

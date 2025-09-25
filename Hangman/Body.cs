@@ -43,7 +43,7 @@ internal class Body
         }
         if (other.Entity is ICollidable collidable2)
         {
-            collidable2.OnCollision(other);
+            collidable2.OnCollision(this);
         }
     }
 

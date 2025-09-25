@@ -50,6 +50,125 @@ internal class Renderer
             }
         }
     }
+
+    public void DrawText(int x, int y, string text, Color color)
+    {
+        string[] lines = text.Split('\n');
+        for (int j = 0; j < lines.Length; j++)
+        {
+            int yPos = y + j - CameraY;
+            if (yPos < 0 || yPos >= Buffer.Height)
+            {
+                continue;
+            }
+            for (int i = 0; i < lines[j].Length; i++)
+            {
+                char c = lines[j][i];
+                if (c != '\0')
+                {
+                    int xPos = x - CameraX + i;
+                    if (xPos < 0 || xPos >= Buffer.Width)
+                    {
+                        continue;
+                    }
+                    int pos = xPos + yPos * Buffer.Width;
+                    Glyph glyph = Buffer.Glyphs[pos];
+                    glyph.Character = c;
+
+                    glyph.Foreground = color;
+                }
+            }
+        }
+    }
+
+    public void DrawRectangle(int x, int y, int width, int height, Color color)
+    {
+        for (int j = 0; j < height; j++)
+        {
+            int yPos = y + j - CameraY;
+            if (yPos < 0 || yPos >= Buffer.Height)
+            {
+                continue;
+            }
+            for (int i = 0; i < width; i++)
+            {
+                int xPos = x + i - CameraX;
+                if (xPos < 0 || xPos >= Buffer.Width)
+                {
+                    continue;
+                }
+                int pos = xPos + yPos * Buffer.Width;
+                Glyph glyph = Buffer.Glyphs[pos];
+                glyph.Character = ' ';
+                glyph.Background = color;
+            }
+        }
+    }
+    public void DrawBox(int x, int y, int width, int height, Color bgColor, Color fgColor)
+    {
+        DrawRectangle(x, y, width, height, bgColor);
+        DrawRectangleOutline(x, y, width, height, fgColor);
+    }
+    public void DrawTextBox(int x, int y, string text, Color bgColor, Color fgColor)
+    {
+        string[] lines = text.Split('\n');
+        int height = lines.Length + 2;
+        int width = 0;
+        foreach (string line in lines)
+        {
+            if (line.Length > width)
+            {
+                width = line.Length;
+            }
+        }
+        width += 2;
+        DrawBox(x, y, width, height, bgColor, fgColor);
+        DrawText(x + 1, y + 1, text, fgColor);
+    }
+    public void DrawRectangleOutline(int x, int y, int width, int height, Color color)
+    {
+        ////$"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟"
+        //char[] top = new char[width];
+        //Array.Fill(top, '▀');
+        //top[0] = '▛';
+        //top[width - 1] = '▜';
+
+        //char[] bottom = new char[width];
+        //Array.Fill(bottom, '▄');
+        //bottom[0] = '▙';
+        //bottom[width - 1] = '▟';
+
+        //char[] middle = new char[width];
+        //Array.Fill(middle, ' ');
+        //middle[0] = '▌';
+        //middle[width - 1] = '▐';
+        int topLeft = x + (y - CameraY) * Buffer.Width - CameraX;
+        int topRight = topLeft + width - 1;
+        int bottomLeft = x + (y + height - 1 - CameraY) * Buffer.Width - CameraX;
+        int bottomRight = bottomLeft + width - 1;
+        Buffer.Glyphs[topLeft].Character = '▛';
+        Buffer.Glyphs[topLeft].Foreground = color;
+        Buffer.Glyphs[topRight].Character = '▜';
+        Buffer.Glyphs[topRight].Foreground = color;
+        Buffer.Glyphs[bottomLeft].Character = '▙';
+        Buffer.Glyphs[bottomLeft].Foreground = color;
+        Buffer.Glyphs[bottomRight].Character = '▟';
+        Buffer.Glyphs[bottomRight].Foreground = color;
+        for (int i = 1; i < width - 1; i++)
+        {
+            Buffer.Glyphs[topLeft + i].Character = '▀';
+            Buffer.Glyphs[topLeft + i].Foreground = color;
+            Buffer.Glyphs[bottomLeft + i].Character = '▄';
+            Buffer.Glyphs[bottomLeft + i].Foreground = color;
+        }
+        for (int i = 1; i < height - 1; i++)
+        {
+            Buffer.Glyphs[topLeft + i * Buffer.Width].Character = '▌';
+            Buffer.Glyphs[topLeft + i * Buffer.Width].Foreground = color;
+            Buffer.Glyphs[topRight + i * Buffer.Width].Character = '▐';
+            Buffer.Glyphs[topRight + i * Buffer.Width].Foreground = color;
+        }
+    }
     public void Draw()
     {
         Console.SetCursorPosition(0, 0);

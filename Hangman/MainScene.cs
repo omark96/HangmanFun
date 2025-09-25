@@ -89,6 +89,16 @@ internal class MainScene : Scene
         renderer.DrawSprite(_player.Sprite, _player.X, _player.Y);
         renderer.CameraX = 0;
         renderer.CameraY = 0;
-        renderer.DrawSprite(_maskedWordSprite, renderer.Buffer.Width / 2, 1);
+        //renderer.DrawRectangle(0, 0, 10, 5, new Color(255, 255, 255));
+        //renderer.DrawRectangleOutline(0, 0, 10, 5, new Color(255, 0, 0));
+        //renderer.DrawText(2, 2, "Test", new Color(0, 255, 0));
+        for (int i = 0; i < 10; i++)
+        {
+            renderer.DrawTextBox(2 + i * 7, 2, "Test", new Color((byte)(i * 20), (byte)(i * 20), (byte)(i * 20)), new Color(255, 255, 255));
+        }
+        //renderer.DrawTextBox(2, 2, "Test", new Color(90, 90, 90), new Color(255, 255, 255));
+        //renderer.DrawTextBox(9, 2, "Test", new Color(110, 110, 110), new Color(255, 255, 255));
+        //renderer.DrawTextBox(16, 2, "Test", new Color(150, 150, 150), new Color(255, 255, 255));
+        //renderer.DrawSprite(_maskedWordSprite, renderer.Buffer.Width / 2, 1);
     }
 }

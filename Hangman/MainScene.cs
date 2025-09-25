@@ -7,22 +7,16 @@ internal class MainScene : Scene
     World _world;
     Ground _ground;
     List<LetterBox> _letterBoxes;
-    string _secretWord;
-    char[] _maskedWord;
-    int _totalGuesses;
-
     Sprite _maskedWordSprite;
-    public GameData Data { get; set; };
-    public MainScene()
+
+    public override GameData Data { get; set; }
+    public MainScene(GameData data)
     {
         _world = new();
         _player = new(_world, 15, 11);
         _ground = new(_world, -20, 14);
         _letterBoxes = new();
-        _secretWord = "ABC";
-        _maskedWord = new char[_secretWord.Length];
-        Array.Fill(_maskedWord, '-');
-        _totalGuesses = 0;
+        Data = data;
         _maskedWordSprite = NewSprite();
         //LetterBox letterBox = new(_world, 0, 0, 'A');
         //_letterBoxes.Add(letterBox);
@@ -36,26 +30,30 @@ internal class MainScene : Scene
 
     private Sprite NewSprite()
     {
-        return new Sprite(0, 0, $"▛{new string('▀', _secretWord.Length)}▜\n" +
-            $"▌{new string(_maskedWord)}▐\n" +
-            $"▙{new string('▄', _secretWord.Length)}▟", new Color(0, 0, 0), new Color(255, 255, 255));
+        string secretWord = Data.SecretWord;
+        char[] maskedWord = Data.MaskedWord;
+        return new Sprite(0, 0, $"▛{new string('▀', secretWord.Length)}▜\n" +
+            $"▌{new string(maskedWord)}▐\n" +
+            $"▙{new string('▄', secretWord.Length)}▟", new Color(0, 0, 0), new Color(255, 255, 255));
     }
 
-    public override void Update(ConsoleKey? input)
+    public override GameScene Update(ConsoleKey? input)
     {
-
+        string secretWord = Data.SecretWord;
+        char[] maskedWord = Data.MaskedWord;
         _player.Update(input);
         _world.Update();
         foreach (LetterBox box in _letterBoxes)
         {
             if (box.State == BoxState.Selected)
             {
+                Data.TotalGuesses++;
                 char guess = char.ToUpper(box.Letter);
-                for (int i = 0; i < _secretWord.Length; i++)
+                for (int i = 0; i < secretWord.Length; i++)
                 {
-                    if (guess == char.ToUpper(_secretWord[i]))
+                    if (guess == char.ToUpper(secretWord[i]))
                     {
-                        _maskedWord[i] = guess;
+                        maskedWord[i] = guess;
                         box.State = BoxState.Correct;
                         box.Sprite.FgColor = box.StateColor();
                         _maskedWordSprite = NewSprite();
@@ -67,6 +65,14 @@ internal class MainScene : Scene
                     box.Sprite.FgColor = box.StateColor();
                 }
             }
+        }
+        if (new string(maskedWord).ToUpper() == secretWord.ToUpper())
+        {
+            return GameScene.GameOverScene;
+        }
+        else
+        {
+            return GameScene.None;
         }
     }
 

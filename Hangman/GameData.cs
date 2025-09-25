@@ -2,13 +2,15 @@
 
 public class GameData
 {
-    string _secretWord;
-    char[] _maskedWord;
-    int _totalGuesses;
+    public string SecretWord { get; set; }
+    public char[] MaskedWord { get; set; }
+    public int TotalGuesses { get; set; }
 
     public GameData(string secretWord)
     {
-        _secretWord = secretWord;
-
+        SecretWord = "ABC";
+        MaskedWord = new char[SecretWord.Length];
+        Array.Fill(MaskedWord, '-');
+        TotalGuesses = 0;
     }
 }

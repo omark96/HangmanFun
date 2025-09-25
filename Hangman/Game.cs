@@ -1,9 +1,11 @@
-﻿namespace Hangman;
+﻿
+namespace Hangman;
 
 internal class Game
 {
-    MainScene _activeScene;
+    Scene _activeScene;
     Renderer _renderer;
+    GameData _data;
     int _tick;
     int _gameWidth;
     int _gameHeight;
@@ -12,11 +14,12 @@ internal class Game
     {
         _gameWidth = 80;
         _gameHeight = 30;
-        _activeScene = new MainScene();
+        _data = new GameData("ABC");
+        _activeScene = new MainScene(_data);
         _renderer = new Renderer(_gameWidth, _gameHeight);
-
         _tick = 0;
     }
+
     internal void Run()
     {
         Console.Clear();
@@ -25,7 +28,7 @@ internal class Game
         Console.Clear();
         while (true)
         {
-            _activeScene.Update(Input());
+            GameScene newScene = _activeScene.Update(Input());
             _activeScene.Draw(_renderer);
             _renderer.Draw();
             _renderer.Buffer.Clear();
@@ -34,6 +37,15 @@ internal class Game
             //Console.WriteLine(_activeScene._player._speed);
             //Console.Beep(300, 200);
             //Console.Beep();
+            if (newScene == GameScene.GameOverScene)
+            {
+                Console.Clear();
+                Console.WriteLine("You won!");
+                Console.WriteLine($"Number of guesses: {_data.TotalGuesses}");
+                while (true)
+                {
+                }
+            }
             System.Threading.Thread.Sleep(50);
         }
     }

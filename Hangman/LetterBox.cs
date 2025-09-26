@@ -8,7 +8,6 @@ internal class LetterBox : ICollidable
     public char Letter { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
-    public Sprite Sprite { get; set; }
     public BoxState State { get; set; }
 
     public LetterBox(World world, int x, int y, char letter)
@@ -22,7 +21,6 @@ internal class LetterBox : ICollidable
         State = BoxState.Default;
         Color fgColor = StateColor();
         Color bgColor = new Color(0, 0, 0);
-        Sprite = new Sprite(0, 0, $"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟", bgColor, fgColor);
         _body = new(BodyType.Static, position, size, "letterbox", this);
         world.AddBody(_body);
     }
@@ -34,7 +32,6 @@ internal class LetterBox : ICollidable
             if (State == BoxState.Default)
             {
                 State = BoxState.Selected;
-                Sprite.FgColor = StateColor();
             }
         }
     }
@@ -53,6 +50,12 @@ internal class LetterBox : ICollidable
             default:
                 return new Color(255, 255, 255);
         }
+    }
+
+    public void Draw(Renderer renderer)
+    {
+        renderer.DrawBox(X, Y, 5, 3, new Color(50, 50, 50), StateColor());
+        renderer.DrawText(X + 2, Y + 1, Letter.ToString(), StateColor());
     }
 }
 

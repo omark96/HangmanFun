@@ -26,6 +26,10 @@ internal class MainScene : Scene
             LetterBox letterBox = new(_world, i * 6, 6, c);
             _letterBoxes.Add(letterBox);
         }
+        for (int i = 0; i < 10; i++)
+            Console.WriteLine(i);
+        if (3 < 5)
+            Console.WriteLine("Why?");
     }
 
     private Sprite NewSprite()
@@ -55,14 +59,12 @@ internal class MainScene : Scene
                     {
                         maskedWord[i] = guess;
                         box.State = BoxState.Correct;
-                        box.Sprite.FgColor = box.StateColor();
                         _maskedWordSprite = NewSprite();
                     }
                 }
                 if (box.State == BoxState.Selected)
                 {
                     box.State = BoxState.Wrong;
-                    box.Sprite.FgColor = box.StateColor();
                 }
             }
         }
@@ -81,12 +83,12 @@ internal class MainScene : Scene
     {
         renderer.CameraX = _player.X - renderer.Buffer.Width / 2;
         renderer.CameraY = _player.Y - 12;
-        renderer.DrawSprite(_ground.Sprite, _ground.X, _ground.Y);
+        _ground.Draw(renderer);
         foreach (LetterBox letterBox in _letterBoxes)
         {
-            renderer.DrawSprite(letterBox.Sprite, letterBox.X, letterBox.Y);
+            letterBox.Draw(renderer);
         }
-        renderer.DrawSprite(_player.Sprite, _player.X, _player.Y);
+        _player.Draw(renderer);
         renderer.CameraX = 0;
         renderer.CameraY = 0;
         //renderer.DrawRectangle(0, 0, 10, 5, new Color(255, 255, 255));

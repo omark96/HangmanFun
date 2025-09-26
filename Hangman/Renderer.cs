@@ -127,47 +127,53 @@ internal class Renderer
     }
     public void DrawRectangleOutline(int x, int y, int width, int height, Color color)
     {
-        ////$"▛▀▀▀▜\n▌ {letter.ToString()} ▐\n▙▄▄▄▟"
-        //char[] top = new char[width];
-        //Array.Fill(top, '▀');
-        //top[0] = '▛';
-        //top[width - 1] = '▜';
-
-        //char[] bottom = new char[width];
-        //Array.Fill(bottom, '▄');
-        //bottom[0] = '▙';
-        //bottom[width - 1] = '▟';
-
-        //char[] middle = new char[width];
-        //Array.Fill(middle, ' ');
-        //middle[0] = '▌';
-        //middle[width - 1] = '▐';
-        int topLeft = x + (y - CameraY) * Buffer.Width - CameraX;
-        int topRight = topLeft + width - 1;
-        int bottomLeft = x + (y + height - 1 - CameraY) * Buffer.Width - CameraX;
-        int bottomRight = bottomLeft + width - 1;
-        Buffer.Glyphs[topLeft].Character = '▛';
-        Buffer.Glyphs[topLeft].Foreground = color;
-        Buffer.Glyphs[topRight].Character = '▜';
-        Buffer.Glyphs[topRight].Foreground = color;
-        Buffer.Glyphs[bottomLeft].Character = '▙';
-        Buffer.Glyphs[bottomLeft].Foreground = color;
-        Buffer.Glyphs[bottomRight].Character = '▟';
-        Buffer.Glyphs[bottomRight].Foreground = color;
-        for (int i = 1; i < width - 1; i++)
+        //int xPos = x - CameraX;
+        //int yPos = y - CameraY;
+        //int topLeft = xPos + (yPos) * Buffer.Width;
+        //int topRight = topLeft + width - 1;
+        //int bottomLeft = xPos + (yPos + height - 1) * Buffer.Width;
+        //int bottomRight = bottomLeft + width - 1;
+        //Buffer.Glyphs[topLeft].Character = '▛';
+        //Buffer.Glyphs[topLeft].Foreground = color;
+        //Buffer.Glyphs[topRight].Character = '▜';
+        //Buffer.Glyphs[topRight].Foreground = color;
+        //Buffer.Glyphs[bottomLeft].Character = '▙';
+        //Buffer.Glyphs[bottomLeft].Foreground = color;
+        //Buffer.Glyphs[bottomRight].Character = '▟';
+        //Buffer.Glyphs[bottomRight].Foreground = color;
+        //for (int i = 1; i < width - 1; i++)
+        //{
+        //    Buffer.Glyphs[topLeft + i].Character = '▀';
+        //    Buffer.Glyphs[topLeft + i].Foreground = color;
+        //    Buffer.Glyphs[bottomLeft + i].Character = '▄';
+        //    Buffer.Glyphs[bottomLeft + i].Foreground = color;
+        //}
+        //for (int i = 1; i < height - 1; i++)
+        //{
+        //    Buffer.Glyphs[topLeft + i * Buffer.Width].Character = '▌';
+        //    Buffer.Glyphs[topLeft + i * Buffer.Width].Foreground = color;
+        //    Buffer.Glyphs[topRight + i * Buffer.Width].Character = '▐';
+        //    Buffer.Glyphs[topRight + i * Buffer.Width].Foreground = color;
+        //}
+        StringBuilder sb = new();
+        sb.Append('▛');
+        sb.Append('▀', width - 2);
+        sb.Append('▜');
+        sb.Append('\n');
+        StringBuilder midSb = new();
+        midSb.Append('▌');
+        midSb.Append(' ', width - 2);
+        midSb.Append('▐');
+        midSb.Append('\n');
+        for (int i = 0; i < height - 2; i++)
         {
-            Buffer.Glyphs[topLeft + i].Character = '▀';
-            Buffer.Glyphs[topLeft + i].Foreground = color;
-            Buffer.Glyphs[bottomLeft + i].Character = '▄';
-            Buffer.Glyphs[bottomLeft + i].Foreground = color;
+            sb.Append(midSb);
         }
-        for (int i = 1; i < height - 1; i++)
-        {
-            Buffer.Glyphs[topLeft + i * Buffer.Width].Character = '▌';
-            Buffer.Glyphs[topLeft + i * Buffer.Width].Foreground = color;
-            Buffer.Glyphs[topRight + i * Buffer.Width].Character = '▐';
-            Buffer.Glyphs[topRight + i * Buffer.Width].Foreground = color;
-        }
+        sb.Append('▙');
+        sb.Append('▄', width - 2);
+        sb.Append('▟');
+        string box = sb.ToString();
+        DrawText(x, y, box, color);
     }
     public void Draw()
     {

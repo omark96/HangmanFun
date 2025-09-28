@@ -40,21 +40,21 @@ internal class LetterBox : ICollidable
         switch (State)
         {
             case BoxState.Default:
-                return new Color(255, 255, 255);
+                return Color.White;
             case BoxState.Selected:
                 return new Color(200, 200, 0);
             case BoxState.Correct:
                 return new Color(0, 230, 0);
             case BoxState.Wrong:
-                return new Color(255, 0, 0);
+                return Color.Red;
             default:
-                return new Color(255, 255, 255);
+                return Color.White;
         }
     }
 
     public void Draw(Renderer renderer)
     {
-        renderer.DrawBox(X, Y, 5, 3, new Color(50, 50, 50), StateColor());
+        renderer.DrawBox(X, Y, 5, 3, new Color(50), StateColor());
         renderer.DrawText(X + 2, Y + 1, Letter.ToString(), StateColor());
     }
 }

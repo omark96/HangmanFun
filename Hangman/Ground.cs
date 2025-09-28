@@ -22,7 +22,7 @@ internal class Ground
 
     public Ground(World world, int x, int y)
     {
-        int width = 80;
+        int width = 200;
         Vector2 position = new((float)x, (float)y);
         Vector2 size = new(width, 10);
         _body = new Body(BodyType.Static, position, size, "ground", this);
@@ -31,6 +31,6 @@ internal class Ground
 
     internal void Draw(Renderer renderer)
     {
-        renderer.DrawRectangle(X, Y, (int)_body.Size.X, (int)_body.Size.Y, new Color(255, 255, 255));
+        renderer.DrawRectangle(X, Y, (int)_body.Size.X, (int)_body.Size.Y, Color.White);
     }
 }

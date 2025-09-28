@@ -22,6 +22,8 @@ internal class Player : ICollidable
         }
     }
 
+    public bool IsAlive { get; internal set; }
+
     public Player(World world, int x, int y)
     {
         Vector2 position = new((float)x, (float)y);
@@ -29,6 +31,7 @@ internal class Player : ICollidable
         _speed = new Vector2(0, 0);
         _inAir = false;
         _body = new Body(BodyType.Kinematic, position, size, "player", this);
+        IsAlive = true;
         world.AddBody(_body);
     }
 
@@ -49,19 +52,19 @@ internal class Player : ICollidable
         _speed = new(0, -0.7f);
     }
 
-    public void Update(ConsoleKey? input)
+    public void Update(ConsoleKeyInfo? input)
     {
-        if (!_inAir)
+        if (!_inAir && input != null)
         {
-            if (input == ConsoleKey.LeftArrow)
+            if (input.Value.Key == ConsoleKey.LeftArrow)
             {
                 Move(-1);
             }
-            else if (input == ConsoleKey.RightArrow)
+            else if (input.Value.Key == ConsoleKey.RightArrow)
             {
                 Move(1);
             }
-            else if (input == ConsoleKey.UpArrow)
+            else if (input.Value.Key == ConsoleKey.UpArrow)
             {
                 Jump();
             }
@@ -79,11 +82,15 @@ internal class Player : ICollidable
         {
             _inAir = false;
         }
+        if (other.Name == "lava")
+        {
+            IsAlive = false;
+        }
     }
 
     public void Draw(Renderer renderer)
     {
         // \0o\n/|\\\n/\0\\
-        renderer.DrawText(X - 1, Y, "\0o\n/|\\\n/\0\\", new Color(255, 255, 255));
+        renderer.DrawText(X - 1, Y, "\0o\n/|\\\n/\0\\", Color.White);
     }
 }

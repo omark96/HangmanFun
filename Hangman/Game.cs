@@ -1,12 +1,12 @@
 ﻿
-namespace Hangman;
+using HangmanFun.Scenes;
 
+namespace Hangman;
 internal class Game
 {
     Scene _activeScene;
     Renderer _renderer;
     GameData _data;
-    int _tick;
     int _gameWidth;
     int _gameHeight;
 
@@ -14,10 +14,9 @@ internal class Game
     {
         _gameWidth = 80;
         _gameHeight = 30;
-        _data = new GameData("ABC");
-        _activeScene = new MainScene(_data);
+        _data = new GameData("C");
+        _activeScene = new Title(_data);
         _renderer = new Renderer(_gameWidth, _gameHeight);
-        _tick = 0;
     }
 
     internal void Run()
@@ -32,23 +31,32 @@ internal class Game
             _activeScene.Draw(_renderer);
             _renderer.Draw();
             _renderer.Buffer.Clear();
-            _tick++;
+            _data.Tick += 1;
             //Console.SetCursorPosition(0, 0);
             //Console.WriteLine(_activeScene._player._speed);
             //Console.Beep(300, 200);
             //Console.Beep();
-            if (newScene == GameScene.GameOverScene)
-            {
-                Console.Clear();
-                Console.WriteLine("You won!");
-                Console.WriteLine($"Number of guesses: {_data.TotalGuesses}");
-                while (true)
-                {
-                }
-            }
+            //if (newScene == GameScene.GameOverScene)
+            //{
+            //    Console.Clear();
+            //    Console.WriteLine("You won!");
+            //    Console.WriteLine($"Number of guesses: {_data.TotalGuesses}");
+            //    while (true)
+            //    {
+            //    }
+            //}
+            _activeScene = SwitchScene(newScene) ?? _activeScene;
             System.Threading.Thread.Sleep(50);
         }
     }
+
+    internal Scene? SwitchScene(GameScene scene) => scene switch
+    {
+        GameScene.TitleScene => new Title(_data),
+        GameScene.GameOverScene => new GameOver(_data),
+        GameScene.MainScene => new Main(_data),
+        _ => null,
+    };
 
     //internal void Draw()
     //{
@@ -63,15 +71,15 @@ internal class Game
     //    //}
     //}
 
-    internal ConsoleKey? Input()
+    internal ConsoleKeyInfo Input()
     {
-        ConsoleKey? input = null;
+        ConsoleKeyInfo input = new((char)0, ConsoleKey.None, false, false, false);
         if (Console.KeyAvailable)
         {
             //input = Console.ReadKey(false).Key;
             while (Console.KeyAvailable)
             {
-                input = Console.ReadKey(false).Key;
+                input = Console.ReadKey(true);
             }
             Console.In.Close();
         }

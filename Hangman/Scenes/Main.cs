@@ -1,52 +1,41 @@
 ﻿
-namespace Hangman;
+using Hangman;
 
-internal class MainScene : Scene
+namespace HangmanFun.Scenes;
+
+internal class Main : Scene
 {
-    Player _player;
     World _world;
+    Player _player;
     Ground _ground;
     List<LetterBox> _letterBoxes;
-    Sprite _maskedWordSprite;
+    Lava _lava;
 
-    public override GameData Data { get; set; }
-    public MainScene(GameData data)
+    internal override GameData Data { get; set; }
+    public Main(GameData data)
     {
         _world = new();
-        _player = new(_world, 15, 11);
-        _ground = new(_world, -20, 14);
+        _player = new(_world, 35, 11);
+        _ground = new(_world, 0, 14);
         _letterBoxes = new();
+        _lava = new Lava(_world, 0, 25);
         Data = data;
-        _maskedWordSprite = NewSprite();
         //LetterBox letterBox = new(_world, 0, 0, 'A');
         //_letterBoxes.Add(letterBox);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 26; i++)
         {
             char c = (char)(i + 65);
-            LetterBox letterBox = new(_world, i * 6, 6, c);
+            LetterBox letterBox = new(_world, 20 + i * 6, 6, c);
             _letterBoxes.Add(letterBox);
         }
-        for (int i = 0; i < 10; i++)
-            Console.WriteLine(i);
-        if (3 < 5)
-            Console.WriteLine("Why?");
     }
 
-    private Sprite NewSprite()
-    {
-        string secretWord = Data.SecretWord;
-        char[] maskedWord = Data.MaskedWord;
-        return new Sprite(0, 0, $"▛{new string('▀', secretWord.Length)}▜\n" +
-            $"▌{new string(maskedWord)}▐\n" +
-            $"▙{new string('▄', secretWord.Length)}▟", new Color(0, 0, 0), new Color(255, 255, 255));
-    }
-
-    public override GameScene Update(ConsoleKey? input)
+    internal override GameScene Update(ConsoleKeyInfo input)
     {
         string secretWord = Data.SecretWord;
         char[] maskedWord = Data.MaskedWord;
         _player.Update(input);
-        _world.Update();
+        bool wrongGuess = false;
         foreach (LetterBox box in _letterBoxes)
         {
             if (box.State == BoxState.Selected)
@@ -59,16 +48,19 @@ internal class MainScene : Scene
                     {
                         maskedWord[i] = guess;
                         box.State = BoxState.Correct;
-                        _maskedWordSprite = NewSprite();
                     }
                 }
                 if (box.State == BoxState.Selected)
                 {
                     box.State = BoxState.Wrong;
+                    wrongGuess = true;
                 }
             }
         }
-        if (new string(maskedWord).ToUpper() == secretWord.ToUpper())
+        _lava.Update(wrongGuess);
+        _world.Update();
+        Data.Won = new string(maskedWord).ToUpper() == secretWord.ToUpper();
+        if (Data.Won || !_player.IsAlive)
         {
             return GameScene.GameOverScene;
         }
@@ -79,9 +71,11 @@ internal class MainScene : Scene
     }
 
 
-    public override void Draw(Renderer renderer)
+    internal override void Draw(Renderer renderer)
     {
         renderer.CameraX = _player.X - renderer.Buffer.Width / 2;
+        if (renderer.CameraX < 0) { renderer.CameraX = 0; }
+        if (renderer.CameraX > 200 - renderer.Buffer.Width) { renderer.CameraX = 200 - renderer.Buffer.Width; }
         renderer.CameraY = _player.Y - 12;
         _ground.Draw(renderer);
         foreach (LetterBox letterBox in _letterBoxes)
@@ -89,18 +83,24 @@ internal class MainScene : Scene
             letterBox.Draw(renderer);
         }
         _player.Draw(renderer);
+        _lava.Draw(renderer);
         renderer.CameraX = 0;
         renderer.CameraY = 0;
+        DrawMaskedWordBox(renderer);
+
         //renderer.DrawRectangle(0, 0, 10, 5, new Color(255, 255, 255));
         //renderer.DrawRectangleOutline(0, 0, 10, 5, new Color(255, 0, 0));
         //renderer.DrawText(2, 2, "Test", new Color(0, 255, 0));
-        for (int i = 0; i < 10; i++)
-        {
-            renderer.DrawTextBox(2 + i * 7, 2, "Test", new Color((byte)(i * 20), (byte)(i * 20), (byte)(i * 20)), new Color(255, 255, 255));
-        }
         //renderer.DrawTextBox(2, 2, "Test", new Color(90, 90, 90), new Color(255, 255, 255));
         //renderer.DrawTextBox(9, 2, "Test", new Color(110, 110, 110), new Color(255, 255, 255));
         //renderer.DrawTextBox(16, 2, "Test", new Color(150, 150, 150), new Color(255, 255, 255));
         //renderer.DrawSprite(_maskedWordSprite, renderer.Buffer.Width / 2, 1);
+    }
+
+    private void DrawMaskedWordBox(Renderer renderer)
+    {
+        int xPos = (renderer.Buffer.Width - Data.MaskedWord.Length - 1) / 2;
+        int yPos = 2;
+        renderer.DrawTextBox(xPos, yPos, new string(Data.MaskedWord), new Color(0, 0, 0), new Color(255, 255, 255));
     }
 }

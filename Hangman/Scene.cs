@@ -2,9 +2,9 @@
 
 internal abstract class Scene
 {
-    public abstract GameData Data { get; set; }
-    public abstract GameScene Update(ConsoleKey? input);
-    public abstract void Draw(Renderer renderer);
+    internal abstract GameData Data { get; set; }
+    internal abstract GameScene Update(ConsoleKeyInfo input);
+    internal abstract void Draw(Renderer renderer);
 }
 
 internal enum GameScene

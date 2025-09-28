@@ -15,43 +15,27 @@ internal class Renderer
         CameraY = 0;
     }
 
-    public void DrawSprite(Sprite sprite, int x, int y)
+    internal void CenterCameraX()
     {
-        string[] lines = sprite.Texture.Split('\n');
-        for (int j = 0; j < lines.Length; j++)
-        {
-            int yPos = sprite.Y + y + j - CameraY;
-            if (yPos < 0 || yPos >= Buffer.Height)
-            {
-                continue;
-            }
-            for (int i = 0; i < lines[j].Length; i++)
-            {
-                char c = lines[j][i];
-                if (c != '\0')
-                {
-                    int xPos = sprite.X + x - CameraX + i;
-                    if (xPos < 0 || xPos >= Buffer.Width)
-                    {
-                        continue;
-                    }
-                    int pos = xPos + yPos * Buffer.Width;
-                    Glyph glyph = Buffer.Glyphs[pos];
-                    glyph.Character = c;
-                    if (sprite.BgColor != null)
-                    {
-                        glyph.Background = (Color)sprite.BgColor;
-                    }
-                    if (sprite.FgColor != null)
-                    {
-                        glyph.Foreground = (Color)sprite.FgColor;
-                    }
-                }
-            }
-        }
+        CameraX = -Buffer.Width / 2;
+    }
+    internal void CenterCameraY()
+    {
+        CameraX = -Buffer.Height / 2;
     }
 
-    public void DrawText(int x, int y, string text, Color color)
+    internal int TextWidth(string text)
+    {
+        string[] lines = text.Split('\n');
+        int width = 0;
+        foreach (string line in lines)
+        {
+            width = Math.Max(width, line.Trim().Length);
+        }
+        return width;
+    }
+
+    internal void DrawText(int x, int y, string text, Color color)
     {
         string[] lines = text.Split('\n');
         for (int j = 0; j < lines.Length; j++)
@@ -81,7 +65,7 @@ internal class Renderer
         }
     }
 
-    public void DrawRectangle(int x, int y, int width, int height, Color color)
+    internal void DrawRectangle(int x, int y, int width, int height, Color color)
     {
         for (int j = 0; j < height; j++)
         {
@@ -104,12 +88,12 @@ internal class Renderer
             }
         }
     }
-    public void DrawBox(int x, int y, int width, int height, Color bgColor, Color fgColor)
+    internal void DrawBox(int x, int y, int width, int height, Color bgColor, Color fgColor)
     {
         DrawRectangle(x, y, width, height, bgColor);
         DrawRectangleOutline(x, y, width, height, fgColor);
     }
-    public void DrawTextBox(int x, int y, string text, Color bgColor, Color fgColor)
+    internal void DrawTextBox(int x, int y, string text, Color bgColor, Color fgColor)
     {
         string[] lines = text.Split('\n');
         int height = lines.Length + 2;
@@ -125,7 +109,7 @@ internal class Renderer
         DrawBox(x, y, width, height, bgColor, fgColor);
         DrawText(x + 1, y + 1, text, fgColor);
     }
-    public void DrawRectangleOutline(int x, int y, int width, int height, Color color)
+    internal void DrawRectangleOutline(int x, int y, int width, int height, Color color)
     {
         //int xPos = x - CameraX;
         //int yPos = y - CameraY;
@@ -175,7 +159,7 @@ internal class Renderer
         string box = sb.ToString();
         DrawText(x, y, box, color);
     }
-    public void Draw()
+    internal void Draw()
     {
         Console.SetCursorPosition(0, 0);
         StringBuilder sb = new(Buffer.Width * Buffer.Height * 39 + Buffer.Height);

@@ -1,4 +1,4 @@
-﻿namespace Hangman;
+﻿namespace HangmanFun.Graphics;
 
 internal class GlyphBuffer
 {

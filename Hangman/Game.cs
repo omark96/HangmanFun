@@ -1,4 +1,5 @@
 ﻿
+using HangmanFun.Graphics;
 using HangmanFun.Scenes;
 
 namespace Hangman;

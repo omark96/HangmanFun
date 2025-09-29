@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using HangmanFun.Graphics;
+using System.Numerics;
 
 namespace Hangman
 {
@@ -7,17 +8,11 @@ namespace Hangman
         Body _body;
         public int X
         {
-            get
-            {
-                return (int)Math.Round(_body.Position.X);
-            }
+            get { return (int)Math.Round(_body.Position.X); }
         }
         public int Y
         {
-            get
-            {
-                return (int)Math.Round(_body.Position.Y);
-            }
+            get { return (int)Math.Round(_body.Position.Y); }
         }
         public Lava(World world, int x, int y)
         {

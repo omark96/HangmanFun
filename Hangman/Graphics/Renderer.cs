@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Hangman;
+namespace HangmanFun.Graphics;
 
 internal class Renderer
 {

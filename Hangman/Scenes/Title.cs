@@ -1,5 +1,6 @@
 ﻿
 using Hangman;
+using HangmanFun.Graphics;
 
 namespace HangmanFun.Scenes;
 
@@ -19,6 +20,10 @@ internal class Title : Scene
         renderer.DrawText(-askForName.Length / 2, 10, askForName, Color.White);
         renderer.DrawBox(-askForName.Length / 2 + 1, 12, 15, 3, Color.Black, Color.White);
         renderer.DrawText(-5, 13, Data.Name, Color.White);
+        if ((Data.Tick / 10) % 2 == 0)
+        {
+            renderer.DrawText(-5 + Data.Name.Length, 13, "_", Color.White);
+        }
     }
 
     internal override GameScene Update(ConsoleKeyInfo input)

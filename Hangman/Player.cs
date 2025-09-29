@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using HangmanFun.Graphics;
+using System.Numerics;
 
 namespace Hangman;
 

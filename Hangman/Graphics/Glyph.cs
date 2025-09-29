@@ -1,4 +1,4 @@
-﻿namespace Hangman;
+﻿namespace HangmanFun.Graphics;
 
 internal class Glyph : IEquatable<Glyph>
 {
@@ -21,16 +21,16 @@ internal class Glyph : IEquatable<Glyph>
             return false;
         }
 
-        if (Object.ReferenceEquals(this, other))
+        if (ReferenceEquals(this, other))
         {
             return true;
         }
 
-        if (this.GetType() != other.GetType())
+        if (GetType() != other.GetType())
         {
             return false;
         }
-        return (this.Character == other.Character) && (this.Foreground == other.Foreground) && (this.Background == other.Background);
+        return Character == other.Character && Foreground == other.Foreground && Background == other.Background;
     }
 
     public override int GetHashCode() => (Foreground, Background, Character).GetHashCode();

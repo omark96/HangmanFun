@@ -16,7 +16,7 @@ internal class Game
         _gameWidth = 80;
         _gameHeight = 30;
         _data = new GameData("Komorebi");
-        _activeScene = new Title(_data);
+        _activeScene = new Test(_data);
         _renderer = new Renderer(_gameWidth, _gameHeight);
     }
 

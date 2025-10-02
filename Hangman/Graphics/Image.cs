@@ -3,11 +3,18 @@
 namespace HangmanFun.Graphics;
 internal class Image
 {
-    public int Height { get; set; }
-    public int Width { get; set; }
-    public byte[]? PixelData { get; set; }
+    public int Height { get; private set; }
+    public int Width { get; private set; }
+    public byte[]? PixelData { get; private set; }
     public Image()
     {
+    }
+
+    public Image(byte[] pixelData, int width, int height)
+    {
+        Height = height;
+        Width = width;
+        PixelData = pixelData;
     }
 
     public void LoadImage(string path)
@@ -40,6 +47,4 @@ internal class Image
             }
         }
     }
-
-
 }

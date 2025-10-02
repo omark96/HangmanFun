@@ -8,9 +8,9 @@ internal class Main : Scene
 {
     World _world;
     Player _player;
-    Ground _ground;
     List<LetterBox> _letterBoxes;
     Lava _lava;
+    Ground _ground;
     Image _background;
 
     internal override GameData Data { get; set; }
@@ -78,7 +78,6 @@ internal class Main : Scene
     internal override void Draw(Renderer renderer)
     {
         renderer.CameraY = _player.Y - 12;
-        renderer.DrawImage(renderer.CameraX, -5, _background);
         //int playerX = _player.X - renderer.CameraX;
         if (_player.X < renderer.CameraX + 30)
         {
@@ -95,6 +94,7 @@ internal class Main : Scene
         //renderer.UpdateCamera();
         if (renderer.CameraX < 0) { renderer.CameraX = 0; }
         if (renderer.CameraX > 200 - renderer.Buffer.Width) { renderer.CameraX = 200 - renderer.Buffer.Width; }
+        renderer.DrawImage(renderer.CameraX, -5, _background);
         _ground.Draw(renderer);
         foreach (LetterBox letterBox in _letterBoxes)
         {

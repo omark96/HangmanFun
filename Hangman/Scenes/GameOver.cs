@@ -36,14 +36,11 @@ internal class GameOver : Scene
 
     internal override GameScene Update(ConsoleKeyInfo input)
     {
-        if (input.Key == ConsoleKey.None)
-        {
-            return GameScene.None;
-        }
-        else
+        if (input.Key == ConsoleKey.Enter)
         {
             Data.Reset("B");
             return GameScene.MainScene;
         }
+        return GameScene.None;
     }
 }

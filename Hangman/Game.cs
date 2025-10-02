@@ -15,7 +15,7 @@ internal class Game
     {
         _gameWidth = 80;
         _gameHeight = 30;
-        _data = new GameData("C");
+        _data = new GameData("Komorebi");
         _activeScene = new Title(_data);
         _renderer = new Renderer(_gameWidth, _gameHeight);
     }
@@ -26,6 +26,7 @@ internal class Game
         System.Threading.Thread.Sleep(500);
         Console.CursorVisible = false;
         Console.Clear();
+
         while (true)
         {
             GameScene newScene = _activeScene.Update(Input());
@@ -47,7 +48,11 @@ internal class Game
             //    }
             //}
             _activeScene = SwitchScene(newScene) ?? _activeScene;
-            System.Threading.Thread.Sleep(50);
+            Thread.Sleep(50);
+            if (newScene == GameScene.GameOverScene)
+            {
+                Thread.Sleep(500);
+            }
         }
     }
 

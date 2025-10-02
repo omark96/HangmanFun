@@ -13,7 +13,6 @@ internal class GlyphBuffer
         Width = width;
         Height = height;
         Glyphs = new Glyph[Width * Height];
-        //PrevBuffer = new Glyph[width * height];
         Clear();
     }
 

@@ -6,6 +6,7 @@ namespace Hangman;
 internal class Ground
 {
     Body _body;
+    Image _texture;
     public int X
     {
         get
@@ -28,10 +29,13 @@ internal class Ground
         Vector2 size = new(width, 10);
         _body = new Body(BodyType.Static, position, size, "ground", this);
         world.AddBody(_body);
+        _texture = new();
+        _texture.LoadImage(@"./Assets/ground.tga");
     }
 
     internal void Draw(Renderer renderer)
     {
-        renderer.DrawRectangle(X, Y, (int)_body.Size.X, (int)_body.Size.Y, Color.White);
+        //renderer.DrawRectangle(X, Y, (int)_body.Size.X, (int)_body.Size.Y, Color.White);
+        renderer.DrawImage(X, Y, _texture);
     }
 }

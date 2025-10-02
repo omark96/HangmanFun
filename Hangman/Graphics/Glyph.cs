@@ -13,7 +13,6 @@ internal class Glyph : IEquatable<Glyph>
         Background = background;
         Character = character;
     }
-
     public bool Equals(Glyph? other)
     {
         if (other is null)

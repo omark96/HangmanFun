@@ -6,6 +6,7 @@ internal class Renderer
 {
     public GlyphBuffer Buffer { get; set; }
     public int CameraX { get; set; }
+    public int CameraTargetX { get; set; }
     public int CameraY { get; set; }
     public Renderer(int width, int height)
     {
@@ -22,6 +23,18 @@ internal class Renderer
     internal void CenterCameraY()
     {
         CameraX = -Buffer.Height / 2;
+    }
+
+    internal void UpdateCamera()
+    {
+        if (CameraTargetX > CameraX)
+        {
+            CameraX++;
+        }
+        else if (CameraTargetX < CameraX)
+        {
+            CameraX--;
+        }
     }
 
     internal int TextWidth(string text)
@@ -188,5 +201,35 @@ internal class Renderer
         }
         string finalResult = sb.ToString();
         Console.Write(sb.ToString());
+    }
+
+    internal void DrawImage(int x, int y, Image img)
+    {
+        //int i = x < CameraX ? CameraX - x : 0;
+        //int j = y - CameraX > 0 ? y : 0;
+        //int width = x + img.Width < CameraX + Buffer.Width ? img.Width : Buffer.Width;
+        //int height = y + img.Height < CameraY + Buffer.Height ? img.Height : Buffer.Height;
+        for (int j = 0; j < img.Height; j++)
+        {
+            int yPos = y + j - CameraY;
+            if (yPos < 0 || yPos >= Buffer.Height)
+            {
+                continue;
+            }
+            for (int i = 0; i < img.Width; i++)
+            {
+                int xPos = x + i - CameraX;
+                if (xPos < 0 || xPos >= Buffer.Width)
+                {
+                    continue;
+                }
+                int pos = xPos + yPos * Buffer.Width;
+                Glyph glyph = Buffer.Glyphs[pos];
+                int imgPos = 4 * (i + j * img.Width);
+                Color color = new Color(img.PixelData![imgPos + 2], img.PixelData[imgPos + 1], img.PixelData[imgPos]);
+                glyph.Character = ' ';
+                glyph.Background = color;
+            }
+        }
     }
 }

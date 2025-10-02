@@ -20,7 +20,7 @@ internal class LetterBox : ICollidable
         Vector2 size = new(5, 3);
         Vector2 position = new(x, y);
         State = BoxState.Default;
-        Color fgColor = StateColor();
+        Color fgColor = StateTextColor();
         Color bgColor = new Color(0, 0, 0);
         _body = new(BodyType.Static, position, size, "letterbox", this);
         world.AddBody(_body);
@@ -36,7 +36,7 @@ internal class LetterBox : ICollidable
             }
         }
     }
-    public Color StateColor()
+    public Color StateTextColor()
     {
         switch (State)
         {
@@ -52,11 +52,22 @@ internal class LetterBox : ICollidable
                 return Color.White;
         }
     }
+    public Color StateBoxColor()
+    {
+        switch (State)
+        {
+            case BoxState.Correct:
+            case BoxState.Wrong:
+                return new Color(150);
+            default:
+                return Color.White;
+        }
+    }
 
     public void Draw(Renderer renderer)
     {
-        renderer.DrawBox(X, Y, 5, 3, new Color(50), StateColor());
-        renderer.DrawText(X + 2, Y + 1, Letter.ToString(), StateColor());
+        renderer.DrawBox(X, Y, 5, 3, new Color(50), StateBoxColor());
+        renderer.DrawText(X + 2, Y + 1, Letter.ToString(), StateTextColor());
     }
 }
 

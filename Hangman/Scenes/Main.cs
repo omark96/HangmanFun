@@ -11,6 +11,7 @@ internal class Main : Scene
     Ground _ground;
     List<LetterBox> _letterBoxes;
     Lava _lava;
+    Image _background;
 
     internal override GameData Data { get; set; }
     public Main(GameData data)
@@ -29,6 +30,8 @@ internal class Main : Scene
             LetterBox letterBox = new(_world, 20 + i * 6, 6, c);
             _letterBoxes.Add(letterBox);
         }
+        _background = new();
+        _background.LoadImage(@".\Assets\volcano.tga");
     }
 
     internal override GameScene Update(ConsoleKeyInfo input)
@@ -74,10 +77,24 @@ internal class Main : Scene
 
     internal override void Draw(Renderer renderer)
     {
-        renderer.CameraX = _player.X - renderer.Buffer.Width / 2;
+        renderer.CameraY = _player.Y - 12;
+        renderer.DrawImage(renderer.CameraX, -5, _background);
+        //int playerX = _player.X - renderer.CameraX;
+        if (_player.X < renderer.CameraX + 30)
+        {
+            renderer.CameraX--;
+        }
+        else if (_player.X > renderer.CameraX + 50)
+        {
+            renderer.CameraX++;
+        }
+        //if (_player.X < renderer.CameraX + 20 || _player.X > renderer.CameraX + 60)
+        //{
+        //    renderer.CameraTargetX = _player.X - renderer.Buffer.Width / 2;
+        //}
+        //renderer.UpdateCamera();
         if (renderer.CameraX < 0) { renderer.CameraX = 0; }
         if (renderer.CameraX > 200 - renderer.Buffer.Width) { renderer.CameraX = 200 - renderer.Buffer.Width; }
-        renderer.CameraY = _player.Y - 12;
         _ground.Draw(renderer);
         foreach (LetterBox letterBox in _letterBoxes)
         {
@@ -85,8 +102,8 @@ internal class Main : Scene
         }
         _player.Draw(renderer);
         _lava.Draw(renderer);
-        renderer.CameraX = 0;
-        renderer.CameraY = 0;
+        //renderer.CameraX = 0;
+        //renderer.CameraY = 0;
         DrawMaskedWordBox(renderer);
 
         //renderer.DrawRectangle(0, 0, 10, 5, new Color(255, 255, 255));
@@ -100,8 +117,8 @@ internal class Main : Scene
 
     private void DrawMaskedWordBox(Renderer renderer)
     {
-        int xPos = (renderer.Buffer.Width - Data.MaskedWord.Length - 1) / 2;
-        int yPos = 2;
+        int xPos = renderer.CameraX + (renderer.Buffer.Width - Data.MaskedWord.Length - 1) / 2;
+        int yPos = renderer.CameraY + 2;
         renderer.DrawTextBox(xPos, yPos, new string(Data.MaskedWord), new Color(0, 0, 0), new Color(255, 255, 255));
     }
 }

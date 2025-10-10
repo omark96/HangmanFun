@@ -1,12 +1,14 @@
 ﻿
 using HangmanFun.Graphics;
 using HangmanFun.Scenes;
+using HangmanFun.Sound;
 
 namespace Hangman;
 internal class Game
 {
     Scene _activeScene;
     Renderer _renderer;
+    MusicPlayer _musicPlayer;
     GameData _data;
     int _gameWidth;
     int _gameHeight;
@@ -16,7 +18,7 @@ internal class Game
         _gameWidth = 80;
         _gameHeight = 30;
         _data = new GameData("Komorebi");
-        _activeScene = new Test(_data);
+        _activeScene = new Title(_data);
         _renderer = new Renderer(_gameWidth, _gameHeight);
     }
 
@@ -26,6 +28,9 @@ internal class Game
         System.Threading.Thread.Sleep(500);
         Console.CursorVisible = false;
         Console.Clear();
+
+        _musicPlayer = new();
+        _musicPlayer.PlayWithWasapi();
 
         while (true)
         {

@@ -34,19 +34,6 @@ internal class Game
             _renderer.Draw();
             _renderer.Buffer.Clear();
             _data.Tick += 1;
-            //Console.SetCursorPosition(0, 0);
-            //Console.WriteLine(_activeScene._player._speed);
-            //Console.Beep(300, 200);
-            //Console.Beep();
-            //if (newScene == GameScene.GameOverScene)
-            //{
-            //    Console.Clear();
-            //    Console.WriteLine("You won!");
-            //    Console.WriteLine($"Number of guesses: {_data.TotalGuesses}");
-            //    while (true)
-            //    {
-            //    }
-            //}
             _activeScene = SwitchScene(newScene) ?? _activeScene;
             Thread.Sleep(50);
             if (newScene == GameScene.GameOverScene)

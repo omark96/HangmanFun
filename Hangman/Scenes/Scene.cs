@@ -1,6 +1,7 @@
-﻿using HangmanFun.Graphics;
+﻿using Hangman;
+using HangmanFun.Graphics;
 
-namespace Hangman;
+namespace HangmanFun.Scenes;
 
 internal abstract class Scene
 {

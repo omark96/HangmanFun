@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HangmanFun", "Hangman\HangmanFun.csproj", "{72927368-9A85-4A1D-A477-66088EFB8822}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibPDBinding", "Libpd\LibPDBinding.csproj", "{C452F742-2653-4403-817B-136545EB5F1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{72927368-9A85-4A1D-A477-66088EFB8822}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72927368-9A85-4A1D-A477-66088EFB8822}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72927368-9A85-4A1D-A477-66088EFB8822}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C452F742-2653-4403-817B-136545EB5F1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

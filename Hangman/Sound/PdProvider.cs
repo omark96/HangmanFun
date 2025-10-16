@@ -10,7 +10,7 @@ using NAudio.Wave;
 
 namespace HangmanFun.Sound
 {
-    class NewApiPdProvider : IWaveProvider, IDisposable
+    class PdProvider : IWaveProvider
     {
         /// <summary>
         /// number of ticks for libPd to compute in a computation cycle.
@@ -30,16 +30,11 @@ namespace HangmanFun.Sound
         Patch _patch;
         float[] _pdBuffer;
 
-        public NewApiPdProvider(string pdPath)
+        public PdProvider(string pdPath)
         {
             SetUpPd(pdPath);
             SetUpBuffer();
             RefillBuffer();
-        }
-
-        ~NewApiPdProvider()
-        {
-            Dispose(false);
         }
 
         /// <summary>
@@ -62,9 +57,6 @@ namespace HangmanFun.Sound
             _pd = new Pd(0, 2, SampleRate);
             // Open Pd patch
             _patch = _pd.LoadPatch(pdPath);
-            // Subscribe to receiver
-            //_pd.Messaging.Float += Pd_Float;
-            _pd.Messaging.Bind(CursorReceiver);
             // Start audio
             Start();
         }
@@ -129,27 +121,5 @@ namespace HangmanFun.Sound
                 return WaveFormat.CreateIeeeFloatWaveFormat(SampleRate, Channels);
             }
         }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        void Dispose(bool isDisposing)
-        {
-            // Only for illustration purposes, simply disposing of _patch and _pd is enough as with any sane implementation of IDisposable.
-            // Unsubscribe from all message receivers
-            _pd.Messaging.Unbind(CursorReceiver);
-            //_pd.Messaging.Float -= Pd_Float;
-            // Stop audio
-            _pd.Stop();
-
-            // Dispose of the IDisposables in correct order
-            _patch.Dispose();
-            _pd.Dispose();
-        }
-
-        public static string CursorReceiver = "cursor";
     }
 }

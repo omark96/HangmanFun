@@ -1,7 +1,8 @@
 ﻿using HangmanFun.Graphics;
+using HangmanFun.Physics;
 using System.Numerics;
 
-namespace Hangman;
+namespace HangmanFun.Entities;
 
 internal class LetterBox : ICollidable
 {

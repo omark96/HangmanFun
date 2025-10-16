@@ -2,25 +2,43 @@
 using NAudio.Wave;
 
 namespace HangmanFun.Sound;
-internal class AudioPlayer
+public class AudioPlayer
 {
     IWavePlayer _output;
-    NewApiPdProvider _pdProvider;
+    PdProvider _pdProvider;
+    bool _playing;
 
     public AudioPlayer(string pdPath)
     {
         _output = new WasapiOut(AudioClientShareMode.Shared, 10);
-        _pdProvider = new NewApiPdProvider(pdPath);
+        _pdProvider = new PdProvider(pdPath);
         _output.Init(_pdProvider);
     }
     public void Play()
     {
+
         _output.Play();
+        _playing = true;
+
     }
 
     public void Pause()
     {
+
         _output.Pause();
+        _playing = false;
+    }
+
+    public void TogglePlaying()
+    {
+        if (_playing)
+        {
+            Pause();
+        }
+        else
+        {
+            Play();
+        }
     }
 
     public void StopPd()

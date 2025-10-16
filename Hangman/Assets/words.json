@@ -1,0 +1,5 @@
+{
+  "Easy": [ "cat", "dog", "sun" ],
+  "Medium": [ "apple", "train", "house" ],
+  "Hard": [ "xylophone", "quizzical", "mnemonic" ]
+}

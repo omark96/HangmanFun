@@ -1,7 +1,8 @@
 ﻿using HangmanFun.Graphics;
+using HangmanFun.Physics;
 using System.Numerics;
 
-namespace Hangman;
+namespace HangmanFun.Entities;
 
 internal class Ground
 {
@@ -25,12 +26,12 @@ internal class Ground
     public Ground(World world, int x, int y)
     {
         int width = 200;
-        Vector2 position = new((float)x, (float)y);
+        Vector2 position = new(x, y);
         Vector2 size = new(width, 10);
         _body = new Body(BodyType.Static, position, size, "ground", this);
         world.AddBody(_body);
         _texture = new();
-        _texture.LoadImage(@"./Assets/ground.tga");
+        _texture.LoadTGA(@"./Assets/ground.tga");
     }
 
     internal void Draw(Renderer renderer)

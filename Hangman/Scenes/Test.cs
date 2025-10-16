@@ -6,11 +6,8 @@ namespace HangmanFun.Scenes;
 internal class Test : Scene
 {
     Image _img;
-    AudioPlayer _audioPlayer;
-    bool _playing = true;
-    internal override GameData Data { get; set; }
 
-    public Test(GameData data)
+    public Test(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer)
     {
         Data = data;
         byte[] buffer = new byte[256 * 4];
@@ -21,31 +18,18 @@ internal class Test : Scene
             buffer[4 * i + 2] = 0;
         }
         _img = new(buffer, 64, 4);
-        _audioPlayer = new("./Assets/bg.pd");
-        _audioPlayer.Play();
         //_img.LoadImage(@".\Assets\lava3.tga");
     }
 
-    internal override void Draw(Renderer renderer)
+    internal override void Draw()
     {
-        renderer.DrawImage(0, 0, _img);
+        Renderer.DrawImage(0, 0, _img);
     }
 
     internal override GameScene Update(ConsoleKeyInfo input)
     {
-        if (input.Key == ConsoleKey.P)
-        {
-            if (_playing)
-            {
-                _audioPlayer.Pause();
-            }
-            else
-            {
-                _audioPlayer.Play();
-            }
-            _playing = !_playing;
-        }
-        else if (input.Key == ConsoleKey.Spacebar)
+
+        if (input.Key == ConsoleKey.Spacebar)
         {
             return GameScene.TitleScene;
         }

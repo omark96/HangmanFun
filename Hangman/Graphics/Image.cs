@@ -17,7 +17,7 @@ internal class Image
         PixelData = pixelData;
     }
 
-    public void LoadImage(string path)
+    public void LoadTGA(string path)
     {
         using (var stream = File.Open(path, FileMode.Open))
         {

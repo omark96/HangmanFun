@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Hangman;
+namespace HangmanFun.Physics;
 
 internal class Body
 {

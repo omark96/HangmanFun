@@ -1,28 +1,25 @@
 ﻿
 using Hangman;
 using HangmanFun.Graphics;
+using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
 internal class Title : Scene
 {
-    internal override GameData Data { get; set; }
 
-    public Title(GameData data)
-    {
-        Data = data;
-    }
+    public Title(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer) { }
 
-    internal override void Draw(Renderer renderer)
+    internal override void Draw()
     {
-        renderer.CenterCameraX();
+        Renderer.CenterCameraX();
         string askForName = "What's your name?";
-        renderer.DrawText(-askForName.Length / 2, 10, askForName, Color.White);
-        renderer.DrawBox(-askForName.Length / 2 + 1, 12, 15, 3, Color.Black, Color.White);
-        renderer.DrawText(-5, 13, Data.Name, Color.White);
+        Renderer.DrawText(-askForName.Length / 2, 10, askForName, Color.White);
+        Renderer.DrawBox(-askForName.Length / 2 + 1, 12, 15, 3, Color.Black, Color.White);
+        Renderer.DrawText(-5, 13, Data.Name, Color.White);
         if ((Data.Tick / 10) % 2 == 0)
         {
-            renderer.DrawText(-5 + Data.Name.Length, 13, "_", Color.White);
+            Renderer.DrawText(-5 + Data.Name.Length, 13, "_", Color.White);
         }
     }
 

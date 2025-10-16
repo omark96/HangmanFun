@@ -1,18 +1,15 @@
 ﻿using Hangman;
 using HangmanFun.Graphics;
+using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
 internal class GameOver : Scene
 {
-    internal override GameData Data { get; set; }
 
-    public GameOver(GameData data)
-    {
-        Data = data;
-    }
+    public GameOver(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer) { }
 
-    internal override void Draw(Renderer renderer)
+    internal override void Draw()
     {
         string winLoseText;
         if (Data.Won)
@@ -27,9 +24,9 @@ internal class GameOver : Scene
         winLoseText = winLoseText.PadLeft(winLoseText.Length + (guesses.Length - winLoseText.Length) / 2);
         //winLoseText = String.Concat(winLoseText, "\n\n", guesses);
         winLoseText = $"{winLoseText}\n\n{guesses}";
-        int width = renderer.TextWidth(winLoseText);
-        renderer.CenterCameraX();
-        renderer.DrawText(-width / 2, 8, winLoseText, new Color(255, 255, 255));
+        int width = Renderer.TextWidth(winLoseText);
+        Renderer.CenterCameraX();
+        Renderer.DrawText(-width / 2, 8, winLoseText, new Color(255, 255, 255));
     }
 
     //internal string CenterAlignText() { }
@@ -38,7 +35,6 @@ internal class GameOver : Scene
     {
         if (input.Key == ConsoleKey.Enter)
         {
-            Data.Reset("B");
             return GameScene.MainScene;
         }
         return GameScene.None;

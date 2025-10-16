@@ -1,13 +1,15 @@
 ﻿
 using HangmanFun.Graphics;
 using HangmanFun.Scenes;
+using HangmanFun.Sound;
 
 namespace Hangman;
 internal class Game
 {
     Scene _activeScene;
     Renderer _renderer;
-    GameData _data;
+    GameData _gameData;
+    AudioPlayer _audioPlayer;
     int _gameWidth;
     int _gameHeight;
 
@@ -15,9 +17,10 @@ internal class Game
     {
         _gameWidth = 80;
         _gameHeight = 30;
-        _data = new GameData("Komorebi");
-        _activeScene = new Test(_data);
+        _gameData = new();
+        _audioPlayer = new("./Assets/bg.pd");
         _renderer = new Renderer(_gameWidth, _gameHeight);
+        _activeScene = new Test(_gameData, _audioPlayer, _renderer);
     }
 
     internal void Run()
@@ -30,10 +33,10 @@ internal class Game
         while (true)
         {
             GameScene newScene = _activeScene.Update(Input());
-            _activeScene.Draw(_renderer);
+            _activeScene.Draw();
             _renderer.Draw();
             _renderer.Buffer.Clear();
-            _data.Tick += 1;
+            _gameData.Tick += 1;
             _activeScene = SwitchScene(newScene) ?? _activeScene;
             Thread.Sleep(50);
             if (newScene == GameScene.GameOverScene)
@@ -43,13 +46,24 @@ internal class Game
         }
     }
 
-    internal Scene? SwitchScene(GameScene scene) => scene switch
+    internal Scene? SwitchScene(GameScene scene)
     {
-        GameScene.TitleScene => new Title(_data),
-        GameScene.GameOverScene => new GameOver(_data),
-        GameScene.MainScene => new Main(_data),
-        _ => null,
-    };
+        switch (scene)
+        {
+            case GameScene.TitleScene:
+                return new Title(_gameData, _audioPlayer, _renderer);
+
+            case GameScene.GameOverScene:
+                return new GameOver(_gameData, _audioPlayer, _renderer);
+
+            case GameScene.MainScene:
+                _gameData.NewRound();
+                return new Main(_gameData, _audioPlayer, _renderer);
+
+            default:
+                return null;
+        }
+    }
 
     //internal void Draw()
     //{
@@ -75,6 +89,10 @@ internal class Game
                 input = Console.ReadKey(true);
             }
             Console.In.Close();
+        }
+        if (input.Key == ConsoleKey.M && _activeScene is not Title)
+        {
+            _audioPlayer.TogglePlaying();
         }
         return input;
     }

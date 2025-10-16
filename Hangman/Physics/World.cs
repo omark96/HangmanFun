@@ -1,5 +1,4 @@
-﻿
-namespace Hangman;
+﻿namespace HangmanFun.Physics;
 
 public enum BodyType
 {

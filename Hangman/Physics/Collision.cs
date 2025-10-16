@@ -1,4 +1,4 @@
-﻿namespace Hangman;
+﻿namespace HangmanFun.Physics;
 
 internal interface ICollidable
 {

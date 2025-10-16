@@ -1,6 +1,9 @@
 ﻿
 using Hangman;
+using HangmanFun.Entities;
 using HangmanFun.Graphics;
+using HangmanFun.Physics;
+using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
@@ -13,8 +16,7 @@ internal class Main : Scene
     Ground _ground;
     Image _background;
 
-    internal override GameData Data { get; set; }
-    public Main(GameData data)
+    public Main(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer)
     {
         _world = new();
         _player = new(_world, 35, 11);
@@ -31,7 +33,7 @@ internal class Main : Scene
             _letterBoxes.Add(letterBox);
         }
         _background = new();
-        _background.LoadImage(@".\Assets\volcano.tga");
+        _background.LoadTGA(@".\Assets\volcano.tga");
     }
 
     internal override GameScene Update(ConsoleKeyInfo input)
@@ -75,36 +77,36 @@ internal class Main : Scene
     }
 
 
-    internal override void Draw(Renderer renderer)
+    internal override void Draw()
     {
-        renderer.CameraY = _player.Y - 12;
+        Renderer.CameraY = _player.Y - 12;
         //int playerX = _player.X - renderer.CameraX;
-        if (_player.X < renderer.CameraX + 30)
+        if (_player.X < Renderer.CameraX + 30)
         {
-            renderer.CameraX--;
+            Renderer.CameraX--;
         }
-        else if (_player.X > renderer.CameraX + 50)
+        else if (_player.X > Renderer.CameraX + 50)
         {
-            renderer.CameraX++;
+            Renderer.CameraX++;
         }
         //if (_player.X < renderer.CameraX + 20 || _player.X > renderer.CameraX + 60)
         //{
         //    renderer.CameraTargetX = _player.X - renderer.Buffer.Width / 2;
         //}
         //renderer.UpdateCamera();
-        if (renderer.CameraX < 0) { renderer.CameraX = 0; }
-        if (renderer.CameraX > 200 - renderer.Buffer.Width) { renderer.CameraX = 200 - renderer.Buffer.Width; }
-        renderer.DrawImage(renderer.CameraX, -5, _background);
-        _ground.Draw(renderer);
+        if (Renderer.CameraX < 0) { Renderer.CameraX = 0; }
+        if (Renderer.CameraX > 200 - Renderer.Buffer.Width) { Renderer.CameraX = 200 - Renderer.Buffer.Width; }
+        Renderer.DrawImage(Renderer.CameraX, -5, _background);
+        _ground.Draw(Renderer);
         foreach (LetterBox letterBox in _letterBoxes)
         {
-            letterBox.Draw(renderer);
+            letterBox.Draw(Renderer);
         }
-        _player.Draw(renderer);
-        _lava.Draw(renderer);
+        _player.Draw(Renderer);
+        _lava.Draw(Renderer);
         //renderer.CameraX = 0;
         //renderer.CameraY = 0;
-        DrawMaskedWordBox(renderer);
+        DrawMaskedWordBox(Renderer);
 
         //renderer.DrawRectangle(0, 0, 10, 5, new Color(255, 255, 255));
         //renderer.DrawRectangleOutline(0, 0, 10, 5, new Color(255, 0, 0));

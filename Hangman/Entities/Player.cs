@@ -1,7 +1,8 @@
 ﻿using HangmanFun.Graphics;
+using HangmanFun.Physics;
 using System.Numerics;
 
-namespace Hangman;
+namespace HangmanFun.Entities;
 
 internal class Player : ICollidable
 {
@@ -27,7 +28,7 @@ internal class Player : ICollidable
 
     public Player(World world, int x, int y)
     {
-        Vector2 position = new((float)x, (float)y);
+        Vector2 position = new(x, y);
         Vector2 size = new(1, 3);
         _speed = new Vector2(0, 0);
         _inAir = false;

@@ -13,6 +13,8 @@ public class AudioPlayer
         _output = new WasapiOut(AudioClientShareMode.Shared, 10);
         _pdProvider = new PdProvider(pdPath);
         _output.Init(_pdProvider);
+        _output.Volume = 0.0f;
+        Play();
     }
     public void Play()
     {
@@ -39,6 +41,14 @@ public class AudioPlayer
         {
             Play();
         }
+    }
+
+    public void SetVolume(int volume)
+    {
+        volume = int.Clamp(volume, 0, 100);
+        float fVolume = 0.2f / 100 * volume;
+        _output.Volume = fVolume;
+
     }
 
     public void StopPd()

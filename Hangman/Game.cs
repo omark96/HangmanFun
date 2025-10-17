@@ -20,7 +20,7 @@ internal class Game
         _gameData = new();
         _audioPlayer = new("./Assets/bg.pd");
         _renderer = new Renderer(_gameWidth, _gameHeight);
-        _activeScene = new Test(_gameData, _audioPlayer, _renderer);
+        _activeScene = new Options(_gameData, _audioPlayer, _renderer);
     }
 
     internal void Run()

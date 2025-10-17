@@ -5,6 +5,7 @@
  * Copyright(c) 2016 Thomas Mayer<thomas@residuum.org>
  */
 using LibPDBinding.Managed;
+using LibPDBinding.Managed.Data;
 using NAudio.Utils;
 using NAudio.Wave;
 
@@ -70,6 +71,18 @@ namespace HangmanFun.Sound
             _pd.Stop();
         }
 
+        public void SetVolume(float volume)
+        {
+            if (volume > 100)
+            {
+                volume = 100;
+            }
+            else if (volume < 0)
+            {
+                volume = 0;
+            }
+            _pd.Messaging.Send("volume", new Float(volume));
+        }
         /// <summary>
         /// An example for reading messages from LibPD
         /// </summary>

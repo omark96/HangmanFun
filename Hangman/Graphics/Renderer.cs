@@ -12,7 +12,7 @@ internal class Renderer
     {
         Buffer = new GlyphBuffer(width, height);
         Buffer.Clear();
-        CameraX = 5;
+        CameraX = 0;
         CameraY = 0;
     }
 
@@ -43,7 +43,7 @@ internal class Renderer
         int width = 0;
         foreach (string line in lines)
         {
-            width = Math.Max(width, line.Trim().Length);
+            width = Math.Max(width, line.Length);
         }
         return width;
     }
@@ -106,7 +106,7 @@ internal class Renderer
         DrawRectangle(x, y, width, height, bgColor);
         DrawRectangleOutline(x, y, width, height, fgColor);
     }
-    internal void DrawTextBox(int x, int y, string text, Color bgColor, Color fgColor)
+    internal void DrawTextBox(int x, int y, string text, Color bgColor, Color fgColor, Color borderColor)
     {
         string[] lines = text.Split('\n');
         int height = lines.Length + 2;
@@ -119,8 +119,13 @@ internal class Renderer
             }
         }
         width += 2;
-        DrawBox(x, y, width, height, bgColor, fgColor);
+        DrawBox(x, y, width, height, bgColor, borderColor);
         DrawText(x + 1, y + 1, text, fgColor);
+    }
+    internal void DrawHorizontalLine(int x, int y, int width, Color lineColor)
+    {
+        string line = new string('─', width);
+        DrawText(x, y, line, lineColor);
     }
     internal void DrawRectangleOutline(int x, int y, int width, int height, Color color)
     {

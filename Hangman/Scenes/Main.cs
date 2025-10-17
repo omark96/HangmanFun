@@ -121,6 +121,6 @@ internal class Main : Scene
     {
         int xPos = renderer.CameraX + (renderer.Buffer.Width - Data.MaskedWord.Length - 1) / 2;
         int yPos = renderer.CameraY + 2;
-        renderer.DrawTextBox(xPos, yPos, new string(Data.MaskedWord), new Color(0, 0, 0), new Color(255, 255, 255));
+        renderer.DrawTextBox(xPos, yPos, new string(Data.MaskedWord), Color.Black, Color.White, Color.White);
     }
 }

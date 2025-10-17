@@ -20,10 +20,10 @@ namespace HangmanFun.Entities
         {
             int width = 200;
             int height = 20;
-            Vector2 position = new(x, y - 10);
+            Vector2 position = new(x, y);
             Vector2 size = new(width, height);
             _body = new Body(BodyType.Static, position, size, "lava", this);
-            _body.Speed = new Vector2(0, -0.005f);
+            _body.Speed = new Vector2(0, -0.01f);
             world.AddBody(_body);
 
             _texture = new();
@@ -34,7 +34,7 @@ namespace HangmanFun.Entities
         {
             if (wrongGuess)
             {
-                _body.Position = new Vector2(_body.Position.X, _body.Position.Y);
+                _body.Position = new Vector2(_body.Position.X, _body.Position.Y - 1);
             }
             _body.Move();
         }

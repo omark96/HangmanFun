@@ -4,6 +4,8 @@ namespace Hangman;
 
 internal class GameData
 {
+    Difficulty _difficulty;
+    int _volume;
     public string SecretWord { get; set; }
     public char[] MaskedWord { get; set; }
     public int TotalGuesses { get; set; }
@@ -11,7 +13,41 @@ internal class GameData
     public bool Won { get; set; }
     public int Tick { get; set; }
     public string Name { get; set; }
-    public Difficulty Difficulty { get; set; }
+    public Difficulty Difficulty
+    {
+        get { return _difficulty; }
+        set
+        {
+            _difficulty = value;
+            if (_difficulty < 0)
+            {
+                _difficulty = (Difficulty)(Enum.GetNames(typeof(Difficulty)).Length - 1);
+            }
+            else if ((int)_difficulty > Enum.GetNames(typeof(Difficulty)).Length - 1)
+            {
+                _difficulty = 0;
+            }
+        }
+    }
+    public int Volume
+    {
+        get
+        {
+            return _volume;
+        }
+        set
+        {
+            _volume = value;
+            if (_volume <= 0)
+            {
+                _volume = 0;
+            }
+            else if (_volume >= 100)
+            {
+                _volume = 100;
+            }
+        }
+    }
 
     public GameData()
     {

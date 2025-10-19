@@ -78,6 +78,12 @@ internal class Renderer
         }
     }
 
+    internal void DrawCenteredText(int y, string text, Color color)
+    {
+        int x = (Buffer.Width - text.Length) / 2;
+        DrawText(x, y, text, color);
+    }
+
     internal void DrawRectangle(int x, int y, int width, int height, Color color)
     {
         for (int j = 0; j < height; j++)

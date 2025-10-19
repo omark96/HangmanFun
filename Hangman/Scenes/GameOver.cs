@@ -11,22 +11,40 @@ internal class GameOver : Scene
 
     internal override void Draw()
     {
+        Renderer.CameraX = 0;
         string winLoseText;
         if (Data.Won)
         {
-            winLoseText = $"{Data.Name}, you won!";
+            winLoseText = $"Congratulations {Data.Name}, you won!";
         }
         else
         {
-            winLoseText = $"{Data.Name}, you lost!";
+            winLoseText = $"Too bad, {Data.Name}, you lost!";
         }
-        string guesses = $"You made a total of {Data.TotalGuesses} guesses!";
-        winLoseText = winLoseText.PadLeft(winLoseText.Length + (guesses.Length - winLoseText.Length) / 2);
-        //winLoseText = String.Concat(winLoseText, "\n\n", guesses);
-        winLoseText = $"{winLoseText}\n\n{guesses}";
-        int width = Renderer.TextWidth(winLoseText);
-        Renderer.CenterCameraX();
-        Renderer.DrawText(-width / 2, 8, winLoseText, new Color(255, 255, 255));
+        int winLoseY = 6;
+        Renderer.DrawCenteredText(winLoseY, winLoseText, Color.White);
+
+        string guessesText = $"You made a total of {Data.TotalGuesses} guesses!";
+        int guessesY = winLoseY + 2;
+        Renderer.DrawCenteredText(guessesY, guessesText, Color.White);
+
+        string wordText = $"The secret word was: {Data.SecretWord.ToUpper()}";
+        int wordY = guessesY + 2;
+        Renderer.DrawCenteredText(wordY, wordText, Color.White);
+
+        string restartText = "Press ENTER to play again!";
+        int restartY = wordY + 4;
+        Renderer.DrawCenteredText(restartY, restartText, Color.Yellow);
+
+
+
+
+        //winLoseText = winLoseText.PadLeft(winLoseText.Length + (guesses.Length - winLoseText.Length) / 2);
+        ////winLoseText = String.Concat(winLoseText, "\n\n", guesses);
+        //winLoseText = $"{winLoseText}\n\n{guesses}";
+        //int width = Renderer.TextWidth(winLoseText);
+        //Renderer.CenterCameraX();
+        //Renderer.DrawText(-width / 2, 8, winLoseText, new Color(255, 255, 255));
     }
 
     //internal string CenterAlignText() { }

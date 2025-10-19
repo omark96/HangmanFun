@@ -53,8 +53,9 @@ internal class GameData
     {
         Words = new();
         Words.LoadWords(@"./Assets/words.json");
-        NewRound();
         Name = String.Empty;
+        Volume = 0;
+        NewRound();
     }
     [MemberNotNull(nameof(SecretWord), nameof(MaskedWord))]
     public void NewRound()

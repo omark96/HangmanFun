@@ -43,8 +43,7 @@ internal class Options : Scene
 
         string difficultyLabel = "Difficulty";
         int difficultyLabelY = lineY + 1;
-        int difficultyLabelX = screenMidX - difficultyLabel.Length / 2;
-        Renderer.DrawText(difficultyLabelX, difficultyLabelY, difficultyLabel, Color.White);
+        Renderer.DrawCenteredText(difficultyLabelY, difficultyLabel, Color.White);
 
         int difficultyWidth = -5;
         foreach (string difficulty in Enum.GetNames(typeof(Difficulty)))
@@ -82,48 +81,52 @@ internal class Options : Scene
 
         string startText = "Press ENTER to start!";
         int startTextY = lineY + 2;
-        int startTextX = screenMidX - startText.Length / 2;
-        Renderer.DrawText(startTextX, startTextY, startText, Color.White);
+        Renderer.DrawCenteredText(startTextY, startText, Color.White);
 
     }
 
     internal override GameScene Update(ConsoleKeyInfo input)
     {
-        if (input.Key == ConsoleKey.UpArrow)
+        switch (input.Key)
         {
-            Selected -= 1;
-        }
-        else if (input.Key == ConsoleKey.DownArrow)
-        {
-            Selected += 1;
-        }
-        else if (input.Key == ConsoleKey.LeftArrow)
-        {
-            if (Selected == OptionSelection.Volume)
-            {
-                Data.Volume -= 10;
-                AudioPlayer.SetVolume(Data.Volume);
-            }
-            else if (Selected == OptionSelection.Difficulty)
-            {
-                Data.Difficulty -= 1;
-            }
-        }
-        else if (input.Key == ConsoleKey.RightArrow)
-        {
-            if (Selected == OptionSelection.Volume)
-            {
-                Data.Volume += 10;
-                AudioPlayer.SetVolume(Data.Volume);
-            }
-            else if (Selected == OptionSelection.Difficulty)
-            {
-                Data.Difficulty += 1;
-            }
-        }
-        else if (input.Key == ConsoleKey.Enter)
-        {
-            return GameScene.TitleScene;
+            case ConsoleKey.UpArrow:
+                Selected -= 1;
+                break;
+
+            case ConsoleKey.DownArrow:
+                Selected += 1;
+                break;
+
+            case ConsoleKey.LeftArrow:
+                switch (Selected)
+                {
+                    case OptionSelection.Volume:
+                        Data.Volume -= 10;
+                        AudioPlayer.SetVolume(Data.Volume);
+                        break;
+
+                    case OptionSelection.Difficulty:
+                        Data.Difficulty -= 1;
+                        break;
+                }
+                break;
+
+            case ConsoleKey.RightArrow:
+                switch (Selected)
+                {
+                    case OptionSelection.Volume:
+                        Data.Volume += 10;
+                        AudioPlayer.SetVolume(Data.Volume);
+                        break;
+
+                    case OptionSelection.Difficulty:
+                        Data.Difficulty += 1;
+                        break;
+                }
+                break;
+
+            case ConsoleKey.Enter:
+                return GameScene.TitleScene;
         }
         return GameScene.None;
     }

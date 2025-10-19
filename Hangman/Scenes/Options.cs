@@ -1,7 +1,6 @@
 ﻿
 using Hangman;
 using HangmanFun.Graphics;
-using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 internal class Options : Scene
@@ -24,25 +23,17 @@ internal class Options : Scene
         }
     }
     int OptionsCount => Enum.GetValues(typeof(OptionSelection)).Length;
-    public Options(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer)
+    public Options(GameData data, Renderer renderer) : base(data, renderer)
     {
     }
     internal override void Draw()
     {
         int screenMidX = Renderer.Buffer.Width / 2;
 
-        string volumeText = $"  Volume  \n  < {Data.Volume} >";
-        int volumeTextX = screenMidX - Renderer.TextWidth(volumeText) / 2 - 1;
-        int volumeTextY = 6;
-        Color volumeBorderColor = Selected == OptionSelection.Volume ? Color.Yellow : Color.White;
-        Renderer.DrawTextBox(volumeTextX, volumeTextY, volumeText, Color.Black, Color.White, volumeBorderColor);
 
-        int lineY = volumeTextY + 5;
-        int lineWidth = 40;
-        Renderer.DrawHorizontalLine(screenMidX - lineWidth / 2, lineY, lineWidth, Color.White);
 
         string difficultyLabel = "Difficulty";
-        int difficultyLabelY = lineY + 1;
+        int difficultyLabelY = 6;
         int difficultyLabelX = screenMidX - difficultyLabel.Length / 2;
         Renderer.DrawText(difficultyLabelX, difficultyLabelY, difficultyLabel, Color.White);
 
@@ -77,7 +68,9 @@ internal class Options : Scene
             Renderer.DrawTextBox(difficultyX, difficultyY, difficultyText, Color.Black, difficultySelectionColor, difficultySelectionColor);
             difficultyX += difficultyText.Length + 5;
         }
-        lineY = difficultyY + 4;
+
+        int lineWidth = 40;
+        int lineY = difficultyY + 4;
         Renderer.DrawHorizontalLine(screenMidX - lineWidth / 2, lineY, lineWidth, Color.White);
 
         string startText = "Press ENTER to start!";
@@ -99,24 +92,14 @@ internal class Options : Scene
         }
         else if (input.Key == ConsoleKey.LeftArrow)
         {
-            if (Selected == OptionSelection.Volume)
-            {
-                Data.Volume -= 10;
-                AudioPlayer.SetVolume(Data.Volume);
-            }
-            else if (Selected == OptionSelection.Difficulty)
+            if (Selected == OptionSelection.Difficulty)
             {
                 Data.Difficulty -= 1;
             }
         }
         else if (input.Key == ConsoleKey.RightArrow)
         {
-            if (Selected == OptionSelection.Volume)
-            {
-                Data.Volume += 10;
-                AudioPlayer.SetVolume(Data.Volume);
-            }
-            else if (Selected == OptionSelection.Difficulty)
+            if (Selected == OptionSelection.Difficulty)
             {
                 Data.Difficulty += 1;
             }
@@ -131,6 +114,5 @@ internal class Options : Scene
 
 internal enum OptionSelection
 {
-    Volume,
     Difficulty
 }

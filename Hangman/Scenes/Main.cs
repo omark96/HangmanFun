@@ -3,7 +3,6 @@ using Hangman;
 using HangmanFun.Entities;
 using HangmanFun.Graphics;
 using HangmanFun.Physics;
-using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
@@ -16,7 +15,7 @@ internal class Main : Scene
     Ground _ground;
     Image _background;
 
-    public Main(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer)
+    public Main(GameData data, Renderer renderer) : base(data, renderer)
     {
         _world = new();
         _player = new(_world, 35, 11);

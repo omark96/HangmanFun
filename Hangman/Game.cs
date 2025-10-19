@@ -1,7 +1,6 @@
 ﻿
 using HangmanFun.Graphics;
 using HangmanFun.Scenes;
-using HangmanFun.Sound;
 
 namespace Hangman;
 internal class Game
@@ -9,7 +8,6 @@ internal class Game
     Scene _activeScene;
     Renderer _renderer;
     GameData _gameData;
-    AudioPlayer _audioPlayer;
     int _gameWidth;
     int _gameHeight;
 
@@ -18,9 +16,8 @@ internal class Game
         _gameWidth = 80;
         _gameHeight = 30;
         _gameData = new();
-        _audioPlayer = new("./Assets/bg.pd");
         _renderer = new Renderer(_gameWidth, _gameHeight);
-        _activeScene = new Options(_gameData, _audioPlayer, _renderer);
+        _activeScene = new Options(_gameData, _renderer);
     }
 
     internal void Run()
@@ -51,14 +48,14 @@ internal class Game
         switch (scene)
         {
             case GameScene.TitleScene:
-                return new Title(_gameData, _audioPlayer, _renderer);
+                return new Title(_gameData, _renderer);
 
             case GameScene.GameOverScene:
-                return new GameOver(_gameData, _audioPlayer, _renderer);
+                return new GameOver(_gameData, _renderer);
 
             case GameScene.MainScene:
                 _gameData.NewRound();
-                return new Main(_gameData, _audioPlayer, _renderer);
+                return new Main(_gameData, _renderer);
 
             default:
                 return null;
@@ -89,10 +86,6 @@ internal class Game
                 input = Console.ReadKey(true);
             }
             Console.In.Close();
-        }
-        if (input.Key == ConsoleKey.M && _activeScene is not Title)
-        {
-            _audioPlayer.TogglePlaying();
         }
         return input;
     }

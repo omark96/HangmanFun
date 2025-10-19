@@ -1,13 +1,12 @@
 ﻿using Hangman;
 using HangmanFun.Graphics;
-using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
 internal class GameOver : Scene
 {
 
-    public GameOver(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer) { }
+    public GameOver(GameData data, Renderer renderer) : base(data, renderer) { }
 
     internal override void Draw()
     {

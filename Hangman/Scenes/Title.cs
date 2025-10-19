@@ -1,14 +1,13 @@
 ﻿
 using Hangman;
 using HangmanFun.Graphics;
-using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 
 internal class Title : Scene
 {
 
-    public Title(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer) { }
+    public Title(GameData data, Renderer renderer) : base(data, renderer) { }
 
     internal override void Draw()
     {

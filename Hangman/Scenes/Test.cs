@@ -1,13 +1,12 @@
 ﻿using Hangman;
 using HangmanFun.Graphics;
-using HangmanFun.Sound;
 
 namespace HangmanFun.Scenes;
 internal class Test : Scene
 {
     Image _img;
 
-    public Test(GameData data, AudioPlayer audioPlayer, Renderer renderer) : base(data, audioPlayer, renderer)
+    public Test(GameData data, Renderer renderer) : base(data, renderer)
     {
         Data = data;
         byte[] buffer = new byte[256 * 4];

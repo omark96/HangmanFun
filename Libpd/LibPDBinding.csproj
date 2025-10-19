@@ -137,5 +137,6 @@
     <Content Include="libwinpthread-1.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="LICENSE.txt" />
   </ItemGroup>
 </Project>
